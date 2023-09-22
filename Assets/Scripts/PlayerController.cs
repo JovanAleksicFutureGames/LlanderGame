@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour
@@ -15,11 +16,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float fuelAmount = 100f;
     [SerializeField] private float fuelDrainRate = .5f;
 
+    [Header("Components")]
+    [SerializeField] private ParticleSystem exhaust;
+
     private float xInput;
 
     //temp - will migrate to Score and Game Manager scripts
 
     [SerializeField] TextMeshProUGUI fuelAmountText;
+    [SerializeField] Image fuelGaugeFill;
 
     private void Awake()
     {
@@ -30,6 +35,7 @@ public class PlayerController : MonoBehaviour
 
         input = new PlayerInput();
         playerMotor = GetComponent<PlayerMotor>();
+        exhaust.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -49,11 +55,14 @@ public class PlayerController : MonoBehaviour
 
     private void Boost() 
     {
-        if (input.Player.Boost.IsPressed() && fuelAmount > 0) 
+        if (input.Player.Boost.IsPressed() && fuelAmount > 0)
         {
             playerMotor.AddUpForce(forceAmount);
             DrainFuel();
+            exhaust.gameObject.SetActive(true);
         }
+        else
+            exhaust.gameObject.SetActive(false);
     }
 
     private void DrainFuel() 
@@ -65,6 +74,7 @@ public class PlayerController : MonoBehaviour
     private void UpdateUI() 
     {
         fuelAmountText.text = fuelAmount.ToString("0");
+        fuelGaugeFill.fillAmount = fuelAmount / 100f;
     }
 
     private void OnEnable()
