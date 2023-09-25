@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Properties;
 using UnityEngine;
 
 
@@ -8,22 +5,27 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-    public int Lives { get; private set; }
+    [field: SerializeField] public int Lives { get; private set; }
 
     private void Awake()
     {
         instance = this;
     }
-    
 
-    public void VictoryCondition() 
+    private void Start()
     {
+        
+    }
 
+
+    public void WinCondition() 
+    {
+        Debug.Log("You have wom the game.");
     }
 
     public void LoseCondition() 
     {
-
+        Debug.Log("You have lost the game");
     }
 
     public void DecrementLives() 
@@ -40,4 +42,6 @@ public class GameManager : MonoBehaviour
     {
         Application.Quit();
     }
+
+    
 }

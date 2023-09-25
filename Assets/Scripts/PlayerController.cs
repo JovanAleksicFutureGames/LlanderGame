@@ -1,8 +1,6 @@
 using System.Collections;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+
 
 [RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour
@@ -13,10 +11,15 @@ public class PlayerController : MonoBehaviour
     private PlayerInput _input;
     private PlayerMotor _playerMotor;
 
-    [SerializeField] private float _rotationSpeed = 10f;
-    [SerializeField] private float _forceAmount = 5f;
-    [SerializeField] private float _fuelAmount = 100f;
-    [SerializeField] private float _fuelDrainRate = .5f;
+    [field:SerializeField] public float _rotationSpeed {get; private set;}
+    [field:SerializeField] public float _forceAmount {get; private set;}
+    [field:SerializeField] public float _fuelAmount {get; private set;}
+    [field:SerializeField] public float _fuelDrainRate { get; private set; }
+    [SerializeField] private float _jumpForce;
+    [SerializeField] private float _jumpCooldownTimer;
+    [SerializeField] private float _jumpFuelCost = 15f;
+
+    [SerializeField] private Vector3 _startPosition;
 
     [Header("Components")]
     [SerializeField] private ParticleSystem _exhaust;
@@ -27,8 +30,6 @@ public class PlayerController : MonoBehaviour
     //temp - will migrate to Score and Game Manager scripts
 
     [SerializeField] GameObject _explosionVFX;
-    [SerializeField] TextMeshProUGUI _fuelAmountText;
-    [SerializeField] Image _fuelGaugeFill;
 
     private void Awake()
     {
@@ -42,18 +43,19 @@ public class PlayerController : MonoBehaviour
         _playerMotor = GetComponent<PlayerMotor>();
         _playerMotor.EnableGravity();
         _exhaust.gameObject.SetActive(false);
+        _startPosition = transform.position;
     }
 
     private void Update()
     {
+        _jumpCooldownTimer -= Time.deltaTime;
         RotateShip();
-        UpdateUI();
-
     }
 
     private void FixedUpdate()
     {
         Boost();
+        Jump();
     }
 
 
@@ -68,23 +70,34 @@ public class PlayerController : MonoBehaviour
         if (_input.Player.Boost.IsPressed() && _fuelAmount > 0)
         {
             _playerMotor.AddUpForce(_forceAmount);
-            DrainFuel();
+            DrainFuelOverTime();
             _exhaust.gameObject.SetActive(true);
+            UIManager.instance.UpdateFuelDisplay();
         }
         else
             _exhaust.gameObject.SetActive(false);
     }
 
-    private void DrainFuel() 
+    private void DrainFuelOverTime() 
     {
        _fuelAmount -= _fuelDrainRate * Time.deltaTime;
        if(_fuelAmount <= 0) _fuelAmount = 0;
     }
 
-    private void UpdateUI() 
+    private void DrainFuel(float amountToDrain) 
     {
-        _fuelAmountText.text = _fuelAmount.ToString("0");
-        _fuelGaugeFill.fillAmount = _fuelAmount / 100f;
+        _fuelAmount -= amountToDrain;
+        UIManager.instance.UpdateFuelDisplay();
+    }
+
+    private void Jump() 
+    {
+        if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && _fuelAmount >= _jumpFuelCost) 
+        {
+            _jumpCooldownTimer = 3f;
+            _playerMotor.JumpForce(_jumpForce);
+            DrainFuel(_jumpFuelCost);
+        }
     }
 
     private void OnEnable()
@@ -108,26 +121,50 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void ResetPlayer()
+    {
+        transform.rotation = Quaternion.Euler(Vector3.zero);
+        _mainBody.SetActive(true);
+        _playerMotor.EnableGravity();
+        _fuelAmount = 100f;
+        UIManager.instance.UpdateFuelDisplay();
+    }
+
+
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.layer == 3) 
+        if (collision.gameObject.layer == 3)
         {
             //socring and end game logic goes here
             StartCoroutine(PlayerDeath());
         }
+        else if(collision.gameObject.layer == 6) 
+        {
+            GameManager.instance.WinCondition();
+        }
     }
+
 
     //coroutines
 
-    private IEnumerator PlayerDeath() 
+    private IEnumerator PlayerDeath()
     {
+
         GameManager.instance.DecrementLives();
         _playerMotor.DisableGravity();
         GameObject explosionInstance = Instantiate(_explosionVFX, transform.position, Quaternion.identity);
         isAlive = false;
         _mainBody.SetActive(false);
+        _playerMotor.StopMovement();
         yield return new WaitForSeconds(0.55f);
         Destroy(explosionInstance);
-        SceneManager.LoadScene("SampleScene");
+        transform.position = _startPosition;
+        yield return new WaitForSeconds(0.1f);
+        UIManager.instance.DisplayLives();
+        ResetPlayer();
+        if (GameManager.instance.Lives <= 0)
+        {
+            GameManager.instance.LoseCondition();
+        }
     }
 }

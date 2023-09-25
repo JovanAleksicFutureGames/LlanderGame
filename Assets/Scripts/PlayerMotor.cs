@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -17,6 +15,11 @@ public class PlayerMotor : MonoBehaviour
         _rigidBody.AddForce(transform.up * forceToAdd, ForceMode.Force);
     }
 
+    public void JumpForce(float forceToAdd) 
+    {
+        _rigidBody.AddForce(transform.up * forceToAdd, ForceMode.Impulse);
+    }
+
     public void DisableGravity() 
     {
         _rigidBody.useGravity = false;
@@ -25,6 +28,11 @@ public class PlayerMotor : MonoBehaviour
     public void EnableGravity() 
     {
         _rigidBody.useGravity = true;
+    }
+
+    public void StopMovement() 
+    {
+        _rigidBody.velocity = Vector3.zero;
     }
 
 }

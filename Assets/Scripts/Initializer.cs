@@ -4,5 +4,9 @@ using UnityEngine;
 
 public class Initializer : MonoBehaviour
 {
-    
+    public static Initializer instance;
+    private void Awake()
+    {
+        instance = this;
+    }
 }
