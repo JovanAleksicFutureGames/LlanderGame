@@ -121,6 +121,7 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator PlayerDeath() 
     {
+        GameManager.instance.DecrementLives();
         _playerMotor.DisableGravity();
         GameObject explosionInstance = Instantiate(_explosionVFX, transform.position, Quaternion.identity);
         isAlive = false;
