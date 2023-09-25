@@ -5,15 +5,26 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : MonoBehaviour
 {
-    private Rigidbody rigidBody;
+    private Rigidbody _rigidBody;
 
     private void Awake()
     {
-        rigidBody = GetComponent<Rigidbody>();
+        _rigidBody = GetComponent<Rigidbody>();
     }
 
     public void AddUpForce(float forceToAdd) 
     {
-        rigidBody.AddForce(transform.up * forceToAdd, ForceMode.Force);
+        _rigidBody.AddForce(transform.up * forceToAdd, ForceMode.Force);
     }
+
+    public void DisableGravity() 
+    {
+        _rigidBody.useGravity = false;
+    }
+
+    public void EnableGravity() 
+    {
+        _rigidBody.useGravity = true;
+    }
+
 }

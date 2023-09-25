@@ -308,12 +308,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b68ee4df7e606f54b8cab3ded3d35d56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 60
-  forceAmount: 7.5
-  fuelAmount: 100
-  fuelDrainRate: 7.5
-  exhaust: {fileID: 2631674124709021979}
-  fuelAmountText: {fileID: 0}
+  isAlive: 0
+  _rotationSpeed: 30
+  _forceAmount: 50
+  _fuelAmount: 100
+  _fuelDrainRate: 5
+  _exhaust: {fileID: 2631674124709021979}
+  _mainBody: {fileID: 6743998773528724781}
+  _explosionVFX: {fileID: 1503011241120423026, guid: 835dabc48d4fcd344a1ee3df6b9cea42, type: 3}
+  _fuelAmountText: {fileID: 0}
+  _fuelGaugeFill: {fileID: 0}
 --- !u!114 &1456664504716276489
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,6 +8,6 @@ public class EnironmentSineWave : MonoBehaviour
 
     private void Update()
     {
-        
+      
     }
 }

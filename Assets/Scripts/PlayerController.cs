@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,24 +8,27 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
+    public bool isAlive;
 
-    private PlayerInput input;
-    private PlayerMotor playerMotor;
+    private PlayerInput _input;
+    private PlayerMotor _playerMotor;
 
-    [SerializeField] private float rotationSpeed = 10f;
-    [SerializeField] private float forceAmount = 5f;
-    [SerializeField] private float fuelAmount = 100f;
-    [SerializeField] private float fuelDrainRate = .5f;
+    [SerializeField] private float _rotationSpeed = 10f;
+    [SerializeField] private float _forceAmount = 5f;
+    [SerializeField] private float _fuelAmount = 100f;
+    [SerializeField] private float _fuelDrainRate = .5f;
 
     [Header("Components")]
-    [SerializeField] private ParticleSystem exhaust;
+    [SerializeField] private ParticleSystem _exhaust;
+    [SerializeField] private GameObject _mainBody;
 
     private float xInput;
 
     //temp - will migrate to Score and Game Manager scripts
 
-    [SerializeField] TextMeshProUGUI fuelAmountText;
-    [SerializeField] Image fuelGaugeFill;
+    [SerializeField] GameObject _explosionVFX;
+    [SerializeField] TextMeshProUGUI _fuelAmountText;
+    [SerializeField] Image _fuelGaugeFill;
 
     private void Awake()
     {
@@ -32,69 +36,75 @@ public class PlayerController : MonoBehaviour
         {
             instance = this;
         }
-
-        input = new PlayerInput();
-        playerMotor = GetComponent<PlayerMotor>();
-        exhaust.gameObject.SetActive(false);
+        isAlive = true;
+        _mainBody.SetActive(true);
+        _input = new PlayerInput();
+        _playerMotor = GetComponent<PlayerMotor>();
+        _playerMotor.EnableGravity();
+        _exhaust.gameObject.SetActive(false);
     }
 
     private void Update()
     {
         RotateShip();
-        Boost();
         UpdateUI();
 
+    }
+
+    private void FixedUpdate()
+    {
+        Boost();
     }
 
 
     private void RotateShip()
     {
-        xInput = -input.Player.Rotate.ReadValue<Vector2>().x;
-        transform.Rotate(Vector3.forward * xInput * rotationSpeed * Time.deltaTime);
+        xInput = -_input.Player.Rotate.ReadValue<Vector2>().x;
+        transform.Rotate(Vector3.forward * xInput * _rotationSpeed * Time.fixedDeltaTime);
     }
 
     private void Boost() 
     {
-        if (input.Player.Boost.IsPressed() && fuelAmount > 0)
+        if (_input.Player.Boost.IsPressed() && _fuelAmount > 0)
         {
-            playerMotor.AddUpForce(forceAmount);
+            _playerMotor.AddUpForce(_forceAmount);
             DrainFuel();
-            exhaust.gameObject.SetActive(true);
+            _exhaust.gameObject.SetActive(true);
         }
         else
-            exhaust.gameObject.SetActive(false);
+            _exhaust.gameObject.SetActive(false);
     }
 
     private void DrainFuel() 
     {
-       fuelAmount -= fuelDrainRate * Time.deltaTime;
-       if(fuelAmount <= 0) fuelAmount = 0;
+       _fuelAmount -= _fuelDrainRate * Time.deltaTime;
+       if(_fuelAmount <= 0) _fuelAmount = 0;
     }
 
     private void UpdateUI() 
     {
-        fuelAmountText.text = fuelAmount.ToString("0");
-        fuelGaugeFill.fillAmount = fuelAmount / 100f;
+        _fuelAmountText.text = _fuelAmount.ToString("0");
+        _fuelGaugeFill.fillAmount = _fuelAmount / 100f;
     }
 
     private void OnEnable()
     {
-        input.Enable();
+        _input.Enable();
     }
 
     private void OnDisable()
     {
-        input.Disable();
+        _input.Disable();
     }
 
     //public methods
 
     public void AddFuel(float fuelToAdd) 
     {
-        fuelAmount += fuelToAdd;
-        if(fuelAmount >= 100) 
+        _fuelAmount += fuelToAdd;
+        if(_fuelAmount >= 100) 
         {
-            fuelAmount = 100;
+            _fuelAmount = 100;
         }
     }
 
@@ -103,9 +113,20 @@ public class PlayerController : MonoBehaviour
         if(collision.gameObject.layer == 3) 
         {
             //socring and end game logic goes here
-            SceneManager.LoadScene("SampleScene");
+            StartCoroutine(PlayerDeath());
         }
     }
 
+    //coroutines
 
+    private IEnumerator PlayerDeath() 
+    {
+        _playerMotor.DisableGravity();
+        GameObject explosionInstance = Instantiate(_explosionVFX, transform.position, Quaternion.identity);
+        isAlive = false;
+        _mainBody.SetActive(false);
+        yield return new WaitForSeconds(0.55f);
+        Destroy(explosionInstance);
+        SceneManager.LoadScene("SampleScene");
+    }
 }
