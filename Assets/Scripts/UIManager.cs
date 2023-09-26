@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
+    [SerializeField] private GameObject _pauseMenu;
     [SerializeField] private TextMeshProUGUI _LivesText;
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _fuelAmountText;
@@ -14,6 +15,7 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        DisablePauseMenu();
     }
 
     private void Start()
@@ -31,5 +33,15 @@ public class UIManager : MonoBehaviour
     public void DisplayLives() 
     {
         _LivesText.text = "Lives: " + GameManager.instance.Lives.ToString();
+    }
+
+    public void EnablePauseMenu() 
+    {
+        _pauseMenu.SetActive(true);
+    }
+
+    public void DisablePauseMenu() 
+    {
+        _pauseMenu.SetActive(false);
     }
 }

@@ -110,17 +110,6 @@ public class PlayerController : MonoBehaviour
         _input.Disable();
     }
 
-    //public methods
-
-    public void AddFuel(float fuelToAdd) 
-    {
-        _fuelAmount += fuelToAdd;
-        if(_fuelAmount >= 100) 
-        {
-            _fuelAmount = 100;
-        }
-    }
-
     private void ResetPlayer()
     {
         transform.rotation = Quaternion.Euler(Vector3.zero);
@@ -142,6 +131,22 @@ public class PlayerController : MonoBehaviour
         {
             GameManager.instance.WinCondition();
         }
+    }
+
+    //public methods
+
+    public void AddFuel(float fuelToAdd)
+    {
+        _fuelAmount += fuelToAdd;
+        if (_fuelAmount >= 100)
+        {
+            _fuelAmount = 100;
+        }
+    }
+
+    public bool HasPressedPause() 
+    {
+        return _input.Player.Pause.WasPerformedThisFrame();
     }
 
 
