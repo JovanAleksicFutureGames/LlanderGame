@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -28,7 +28,9 @@ public class GameManager : MonoBehaviour
 
     public void WinCondition() 
     {
-        Debug.Log("You have wom the game.");
+        //start game win FX
+        //start game win sound
+        SceneHandler.instance.NextScene();
     }
 
     public void LoseCondition() 
