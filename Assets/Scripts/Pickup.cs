@@ -11,7 +11,7 @@ public class Pickup : MonoBehaviour
     {
         if(other.gameObject.tag == "Player") 
         {
-            PlayerController.instance.AddFuel(fuelAmount);
+            PlayerManager.instance.GetPlayer(0).AddFuel(fuelAmount);
             Destroy(gameObject, 0.1f);
         }
     }

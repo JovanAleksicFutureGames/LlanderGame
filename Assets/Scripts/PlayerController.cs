@@ -1,11 +1,13 @@
 using System.Collections;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 
 [RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController instance;
+    [field:SerializeField] public bool IsPlayerOne { get; private set;}
+
     public bool isAlive;
 
     private PlayerInput _input;
@@ -19,8 +21,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _jumpCooldownTimer;
     [SerializeField] private float _jumpFuelCost = 15f;
 
-    [SerializeField] private Vector3 _startPosition;
-
     [Header("Components")]
     [SerializeField] private ParticleSystem _exhaust;
     [SerializeField] private GameObject _mainBody;
@@ -33,17 +33,12 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        if(instance == null)
-        {
-            instance = this;
-        }
         isAlive = true;
         _mainBody.SetActive(true);
         _input = new PlayerInput();
         _playerMotor = GetComponent<PlayerMotor>();
         _playerMotor.EnableGravity();
         _exhaust.gameObject.SetActive(false);
-        _startPosition = transform.position;
     }
 
     private void Update()
@@ -61,21 +56,46 @@ public class PlayerController : MonoBehaviour
 
     private void RotateShip()
     {
-        xInput = -_input.Player.Rotate.ReadValue<Vector2>().x;
-        transform.Rotate(Vector3.forward * xInput * _rotationSpeed * Time.fixedDeltaTime);
+        if (IsPlayerOne) 
+        {
+            xInput = -_input.Player.Rotate.ReadValue<Vector2>().x;
+            transform.Rotate(Vector3.forward * xInput * _rotationSpeed * Time.fixedDeltaTime);
+        }
+        else if (!IsPlayerOne) 
+        {
+            xInput = -_input.PlayerTwo.Rotate.ReadValue<Vector2>().x;
+            transform.Rotate(Vector3.forward * xInput * _rotationSpeed * Time.fixedDeltaTime);
+        }
     }
 
     private void Boost() 
     {
-        if (_input.Player.Boost.IsPressed() && _fuelAmount > 0)
+        if (IsPlayerOne)
         {
-            _playerMotor.AddUpForce(_forceAmount);
-            DrainFuelOverTime();
-            _exhaust.gameObject.SetActive(true);
-            UIManager.instance.UpdateFuelDisplay();
+            if (_input.Player.Boost.IsPressed() && _fuelAmount > 0)
+            {
+                _playerMotor.AddUpForce(_forceAmount);
+                DrainFuelOverTime();
+                _exhaust.gameObject.SetActive(true);
+                UIManager.instance.UpdateFuelDisplay();
+            }
+            else
+                _exhaust.gameObject.SetActive(false);
         }
-        else
-            _exhaust.gameObject.SetActive(false);
+
+        else if (!IsPlayerOne) 
+        {
+            if (_input.PlayerTwo.Boost.IsPressed() && _fuelAmount > 0)
+            {
+                _playerMotor.AddUpForce(_forceAmount);
+                DrainFuelOverTime();
+                _exhaust.gameObject.SetActive(true);
+                UIManager.instance.UpdateFuelDisplay();
+            }
+            else
+                _exhaust.gameObject.SetActive(false);
+        }
+
     }
 
     private void DrainFuelOverTime() 
@@ -92,12 +112,25 @@ public class PlayerController : MonoBehaviour
 
     private void Jump() 
     {
-        if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && _fuelAmount >= _jumpFuelCost) 
+        if (IsPlayerOne)
         {
-            _jumpCooldownTimer = 3f;
-            _playerMotor.JumpForce(_jumpForce);
-            DrainFuel(_jumpFuelCost);
+            if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && _fuelAmount >= _jumpFuelCost)
+            {
+                _jumpCooldownTimer = 3f;
+                _playerMotor.JumpForce(_jumpForce);
+                DrainFuel(_jumpFuelCost);
+            }
         }
+        else if (!IsPlayerOne) 
+        {
+            if (_input.PlayerTwo.Jump.IsPressed() && _jumpCooldownTimer <= 0f && _fuelAmount >= _jumpFuelCost)
+            {
+                _jumpCooldownTimer = 3f;
+                _playerMotor.JumpForce(_jumpForce);
+                DrainFuel(_jumpFuelCost);
+            }
+        }
+
     }
 
     private void OnEnable()
@@ -110,14 +143,14 @@ public class PlayerController : MonoBehaviour
         _input.Disable();
     }
 
-    private void ResetPlayer()
+/*    private void ResetPlayer()
     {
         transform.rotation = Quaternion.Euler(Vector3.zero);
         _mainBody.SetActive(true);
         _playerMotor.EnableGravity();
         _fuelAmount = 100f;
         UIManager.instance.UpdateFuelDisplay();
-    }
+    }*/
 
 
     private void OnCollisionEnter(Collision collision)
@@ -163,13 +196,14 @@ public class PlayerController : MonoBehaviour
         _playerMotor.StopMovement();
         yield return new WaitForSeconds(0.55f);
         Destroy(explosionInstance);
-        transform.position = _startPosition;
-        yield return new WaitForSeconds(0.1f);
-        UIManager.instance.DisplayLives();
-        ResetPlayer();
         if (GameManager.instance.Lives <= 0)
         {
             GameManager.instance.LoseCondition();
         }
+        yield return new WaitForSeconds(0.1f);
+        SceneHandler.instance.RestartCurrentLevel();
+/*        UIManager.instance.DisplayLives();
+        ResetPlayer();*/
+
     }
 }

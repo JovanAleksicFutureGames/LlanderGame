@@ -6,16 +6,16 @@ public class SceneHandler : MonoBehaviour
 {
     public static SceneHandler instance;
 
-    private DummyRocket dummyRocket;
+    private DummyRocket _dummyRocket;
     private void Awake()
     {
         instance = this;
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
-            dummyRocket = GameObject.FindObjectOfType<DummyRocket>();
+            _dummyRocket = GameObject.FindObjectOfType<DummyRocket>();
         }
         else 
-            dummyRocket = null;
+            _dummyRocket = null;
     }
 
     public void NextScene()
@@ -46,9 +46,15 @@ public class SceneHandler : MonoBehaviour
         StartCoroutine(StartGameCoroutine());
     }
 
+    public void RestartCurrentLevel() 
+    {
+        int sceneToLoad = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(sceneToLoad);
+    }
+
     private IEnumerator StartGameCoroutine() 
     {
-        dummyRocket.LevelStartBehaviour();
+        _dummyRocket.LevelStartBehaviour();
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadSceneAsync(GetNexSceneIndex());
     }

@@ -16,11 +16,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (PlayerController.instance.HasPressedPause() && !_gamePaused)
+        if (PlayerManager.instance.GetPlayer(0).HasPressedPause() && !_gamePaused)
         {
             PauseGame();
         }
-        else if (PlayerController.instance.HasPressedPause() && _gamePaused) 
+        else if (PlayerManager.instance.GetPlayer(0).HasPressedPause() && _gamePaused) 
         {
             ResumeGame();
         }
