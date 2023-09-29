@@ -4,15 +4,8 @@ using UnityEngine;
 
 public interface ISaveable
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    bool SaveData<T>(string RelativePath, T Data, bool Encrypted); //do I need to encrypt this?
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
+
 }
