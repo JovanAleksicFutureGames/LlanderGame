@@ -8,18 +8,25 @@ public class PlayerManager : MonoBehaviour
 
     public static PlayerManager instance;
 
+
+
     private void Awake()
     {
         instance = this;
 
-        foreach(PlayerController player in GameObject.FindObjectsOfType<PlayerController>()) 
+        foreach (PlayerController player in GameObject.FindObjectsOfType<PlayerController>())
         {
             playerList.Add(player);
         }
-
+        AssignPlayers();
     }
 
-    public PlayerController GetPlayer(int i) 
+    private void AssignPlayers() 
+    {
+        //playerList[0].SetIsPlayerOne(true);
+    }
+
+    public PlayerController GetPlayer(int i)
     {
         return playerList[i];
     }

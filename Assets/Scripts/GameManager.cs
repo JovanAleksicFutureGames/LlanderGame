@@ -58,17 +58,5 @@ public class GameManager : MonoBehaviour
         _gamePaused = true;
         Time.timeScale = 0;
         Debug.Log("Game Paused");
-    }
-
-    public void ReturnToMainMenu() 
-    {
-        Debug.Log("Returning to the main menu");
-    }
-
-    public void QuitGame() 
-    {
-        Application.Quit();
-    }
-
-    
+    } 
 }

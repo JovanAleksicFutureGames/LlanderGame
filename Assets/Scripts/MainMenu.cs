@@ -20,4 +20,9 @@ public class MainMenu : MonoBehaviour
     {
         _howToPlaySCreen.SetActive(false);
     }
+
+    public void QuitGame() 
+    {
+        Application.Quit();
+    }
 }
