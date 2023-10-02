@@ -5,8 +5,6 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour
 {
-    [field: SerializeField] public bool IsPlayerOne { get; private set; }
-
     public bool isAlive;
 
     private PlayerInput _input;
@@ -32,12 +30,11 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        IsPlayerOne = true;
-        isAlive = true;
-        _mainBody.SetActive(true);
         _input = new PlayerInput();
         _playerMotor = GetComponent<PlayerMotor>();
         _playerMotor.EnableGravity();
+        isAlive = true;
+        _mainBody.SetActive(true);
         _exhaust.gameObject.SetActive(false);
     }
 
@@ -56,46 +53,21 @@ public class PlayerController : MonoBehaviour
 
     private void RotateShip()
     {
-        if (IsPlayerOne)
-        {
-            xInput = -_input.Player.Rotate.ReadValue<Vector2>().x;
-            transform.Rotate(Vector3.forward * xInput * _rotationSpeed * Time.fixedDeltaTime);
-        }
-        else if (!IsPlayerOne)
-        {
-            xInput = -_input.PlayerTwo.Rotate.ReadValue<Vector2>().x;
-            transform.Rotate(Vector3.forward * xInput * _rotationSpeed * Time.fixedDeltaTime);
-        }
+        xInput = -_input.Player.Rotate.ReadValue<Vector2>().x;
+        transform.Rotate(Vector3.forward * xInput * _rotationSpeed * Time.fixedDeltaTime);
     }
 
     private void Boost()
     {
-        if (IsPlayerOne)
+        if (_input.Player.Boost.IsPressed() && _fuelAmount > 0)
         {
-            if (_input.Player.Boost.IsPressed() && _fuelAmount > 0)
-            {
-                _playerMotor.AddUpForce(_forceAmount);
-                DrainFuelOverTime();
-                _exhaust.gameObject.SetActive(true);
-                UIManager.instance.UpdateFuelDisplay();
-            }
-            else
-                _exhaust.gameObject.SetActive(false);
+            _playerMotor.AddUpForce(_forceAmount);
+            DrainFuelOverTime();
+            _exhaust.gameObject.SetActive(true);
+            UIManager.instance.UpdateFuelDisplay();
         }
-
-        else if (!IsPlayerOne)
-        {
-            if (_input.PlayerTwo.Boost.IsPressed() && _fuelAmount > 0)
-            {
-                _playerMotor.AddUpForce(_forceAmount);
-                DrainFuelOverTime();
-                _exhaust.gameObject.SetActive(true);
-                UIManager.instance.UpdateFuelDisplay();
-            }
-            else
-                _exhaust.gameObject.SetActive(false);
-        }
-
+        else
+            _exhaust.gameObject.SetActive(false);
     }
 
     private void DrainFuelOverTime()
@@ -112,25 +84,12 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (IsPlayerOne)
+        if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && _fuelAmount >= _jumpFuelCost)
         {
-            if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && _fuelAmount >= _jumpFuelCost)
-            {
-                _jumpCooldownTimer = 3f;
-                _playerMotor.JumpForce(_jumpForce);
-                DrainFuel(_jumpFuelCost);
-            }
+            _jumpCooldownTimer = 3f;
+            _playerMotor.JumpForce(_jumpForce);
+            DrainFuel(_jumpFuelCost);
         }
-        else if (!IsPlayerOne)
-        {
-            if (_input.PlayerTwo.Jump.IsPressed() && _jumpCooldownTimer <= 0f && _fuelAmount >= _jumpFuelCost)
-            {
-                _jumpCooldownTimer = 3f;
-                _playerMotor.JumpForce(_jumpForce);
-                DrainFuel(_jumpFuelCost);
-            }
-        }
-
     }
 
     private void OnEnable()
@@ -177,11 +136,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void SetIsPlayerOne(bool value) 
-    {
-        IsPlayerOne = value;
-    }
-
     public bool HasPressedPause() 
     {
         return _input.Player.Pause.WasPerformedThisFrame();
@@ -208,5 +162,15 @@ public class PlayerController : MonoBehaviour
 /*        UIManager.instance.DisplayLives();
         ResetPlayer();*/
 
+    }
+
+    public bool SaveData<T>(string relativePath, T data)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public T LoadData<T>(string relativePath)
+    {
+        throw new System.NotImplementedException();
     }
 }

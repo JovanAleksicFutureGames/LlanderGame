@@ -40,6 +40,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Save",
+                    "type": "Button",
+                    "id": "35669e4f-21b4-4c2c-804f-f777c34861e3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Load",
+                    "type": "Button",
+                    "id": "a0394f8c-f6de-48e3-9ace-a7e48dba9c37",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -108,94 +126,26 @@
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
-                }
-            ]
-        },
-        {
-            "name": "PlayerTwo",
-            "id": "df7ea24c-c0a5-4649-a3d9-8d8d28e54ade",
-            "actions": [
-                {
-                    "name": "Rotate",
-                    "type": "Value",
-                    "id": "09cae168-8263-4e6c-88ca-e34f20a3fe64",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Boost",
-                    "type": "Button",
-                    "id": "0aa0bce4-e202-4226-90c3-4cba265289a6",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Jump",
-                    "type": "Button",
-                    "id": "05d2822f-9729-4c16-90f7-92955400ef0d",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "RotationValue",
-                    "id": "cd341e70-e915-49ae-b58c-c0553245effe",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotate",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "left",
-                    "id": "37180b62-fa27-4f53-9242-8dea637ecd63",
-                    "path": "<Keyboard>/leftArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "b22cdbdb-ef41-472e-9b2f-86838e44e660",
-                    "path": "<Keyboard>/rightArrow",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
-                    "id": "bb58a809-2b23-429b-983a-3a9c4f2179c5",
-                    "path": "<Keyboard>/numpad0",
+                    "id": "4e919622-b6a4-4338-bfbe-ab24b9c2fb37",
+                    "path": "<Keyboard>/f5",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Boost",
+                    "action": "Save",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "baad9558-e36c-4c0d-b1be-9a8ab7ebc171",
-                    "path": "<Keyboard>/numpadEnter",
+                    "id": "796cc016-7f3f-4fe6-8c5b-d64b6030508e",
+                    "path": "<Keyboard>/f9",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
+                    "action": "Load",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

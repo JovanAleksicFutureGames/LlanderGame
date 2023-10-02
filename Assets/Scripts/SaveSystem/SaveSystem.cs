@@ -1,18 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class SaveSystem : MonoBehaviour
+public class SaveSystem
 {
-    // Start is called before the first frame update
-    void Start()
+    private string dataPath = Application.persistentDataPath + "/saveData.sav";
+
+
+    public void SaveData()
     {
-        
+        if (File.Exists(dataPath))
+        {
+            FileStream dataStream = new FileStream(dataPath, FileMode.Create);
+            //write data
+            dataStream.Close();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void LoadData() 
     {
-        
+        if (!File.Exists(dataPath)) 
+        {
+            FileStream outputStream = new FileStream(dataPath, FileMode.Create);
+            //read data
+            outputStream.Close();
+        }
+        FileStream inputStream = new FileStream(dataPath, FileMode.Open);
+        //read data
+        //apply data
+        inputStream.Close();
     }
 }
