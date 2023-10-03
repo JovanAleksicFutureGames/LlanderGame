@@ -8,7 +8,7 @@ using UnityEngine;
 public class SaveManager
 {
     
-    private const string fileExtension = ".bin";
+    private const string fileExtension = ".txt";
     public static SaveManager Instance
     {
         get

@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour
     public void DecrementLives() 
     {
         PlayerManager.instance.GetPlayer(0).PlayerData.DecrementLives();
+        UIManager.instance.DisplayLives();
     }
 
     

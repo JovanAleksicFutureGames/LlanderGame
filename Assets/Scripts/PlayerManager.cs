@@ -9,7 +9,6 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager instance;
 
 
-
     private void Awake()
     {
         instance = this;
@@ -29,5 +28,10 @@ public class PlayerManager : MonoBehaviour
     public PlayerController GetPlayer(int i)
     {
         return playerList[i];
+    }
+
+    public void SetLives(int amount) 
+    {
+        PlayerData.instance.SetLives(amount);
     }
 }

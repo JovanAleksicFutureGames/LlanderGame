@@ -41,11 +41,14 @@ public class SaveWrapper : MonoBehaviour
     {
         Debug.Log("Loading");
         _saveSystem.LoadData();
+        UIManager.instance.DisplayLives();
+        UIManager.instance.UpdateFuelDisplay();
     }
 
     public void SaveGame()
     {
         Debug.Log("Saving");
         _saveSystem.SaveData();
+
     }
 }

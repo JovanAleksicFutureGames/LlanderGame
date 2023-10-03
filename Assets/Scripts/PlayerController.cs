@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        SaveWrapper.instance.LoadGame();
+        //SaveWrapper.instance.LoadGame();
     }
 
     private void Update()
@@ -71,7 +71,6 @@ public class PlayerController : MonoBehaviour
             _playerMotor.AddUpForce(_forceAmount);
             DrainFuelOverTime();
             _exhaust.gameObject.SetActive(true);
-            UIManager.instance.UpdateFuelDisplay();
         }
         else
             _exhaust.gameObject.SetActive(false);
@@ -86,7 +85,6 @@ public class PlayerController : MonoBehaviour
     private void DrainFuel(float amountToDrain)
     {
         PlayerData.SubtractFule(amountToDrain);
-        UIManager.instance.UpdateFuelDisplay();
     }
 
     private void Jump()
@@ -109,14 +107,14 @@ public class PlayerController : MonoBehaviour
         _input.Disable();
     }
 
-    /*    private void ResetPlayer()
-        {
-            transform.rotation = Quaternion.Euler(Vector3.zero);
-            _mainBody.SetActive(true);
-            _playerMotor.EnableGravity();
-            _fuelAmount = 100f;
-            UIManager.instance.UpdateFuelDisplay();
-        }*/
+    private void ResetPlayer()
+    {
+        transform.rotation = Quaternion.Euler(Vector3.zero);
+        _mainBody.SetActive(true);
+        _playerMotor.EnableGravity();
+        PlayerData.SetFuel(100f);
+        transform.position = new Vector3(-12.25f, -2.25f, 0f);
+    }
 
 
     private void OnCollisionEnter(Collision collision)
@@ -124,6 +122,8 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.layer == 3)
         {
             //socring and end game logic goes here
+            //TODO: Cooldown that prevents us from colliding with multiple colliders
+            //TODO: Blinking effects
             StartCoroutine(PlayerDeath());
         }
         else if (collision.gameObject.layer == 6)
@@ -151,22 +151,22 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator PlayerDeath()
     {
-
-        GameManager.instance.DecrementLives();
         _playerMotor.DisableGravity();
         GameObject explosionInstance = Instantiate(_explosionVFX, transform.position, Quaternion.identity);
         _isAlive = false;
         _mainBody.SetActive(false);
+        GameManager.instance.DecrementLives();
         _playerMotor.StopMovement();
         yield return new WaitForSeconds(0.55f);
         Destroy(explosionInstance);
         if (PlayerManager.instance.GetPlayer(0).PlayerData.Lives <= 0)
         {
+            PlayerManager.instance.SetLives(0);
             GameManager.instance.LoseCondition();
         }
-        SaveWrapper.instance.SaveGame();
+        //SaveWrapper.instance.SaveGame();
         yield return new WaitForSeconds(0.1f);
-        SceneHandler.instance.RestartCurrentLevel();
+        ResetPlayer();
 
     }
 }

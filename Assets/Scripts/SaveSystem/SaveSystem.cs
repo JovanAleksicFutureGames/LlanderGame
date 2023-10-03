@@ -17,11 +17,6 @@ public class SaveSystem : MonoBehaviour
     /// Function to locate any objects that can be saved.
     /// </summary>
 
-    private void Awake()
-    {
-        DontDestroyOnLoad(this);
-    }
-
     public void FindSaveObjects()
     {
         // We use a gameobject list because you can't find Interfaces and the system will lose references to them.
