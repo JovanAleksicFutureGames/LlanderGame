@@ -9,10 +9,11 @@ public class PlayerController : MonoBehaviour
 
     private PlayerInput _input;
     private PlayerMotor _playerMotor;
+    public PlayerData PlayerData { get; private set; }
 
     [field: SerializeField] public float _rotationSpeed { get; private set; }
     [field: SerializeField] public float _forceAmount { get; private set; }
-    [field: SerializeField] public float _fuelAmount { get; private set; }
+
     [field: SerializeField] public float _fuelDrainRate { get; private set; }
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _jumpCooldownTimer;
@@ -32,10 +33,16 @@ public class PlayerController : MonoBehaviour
     {
         _input = new PlayerInput();
         _playerMotor = GetComponent<PlayerMotor>();
+        PlayerData = GetComponent<PlayerData>();
         _playerMotor.EnableGravity();
         _isAlive = true;
         _mainBody.SetActive(true);
         _exhaust.gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
+        SaveWrapper.instance.LoadGame();
     }
 
     private void Update()
@@ -59,7 +66,7 @@ public class PlayerController : MonoBehaviour
 
     private void Boost()
     {
-        if (_input.Player.Boost.IsPressed() && _fuelAmount > 0)
+        if (_input.Player.Boost.IsPressed() && PlayerData._fuelAmount > 0)
         {
             _playerMotor.AddUpForce(_forceAmount);
             DrainFuelOverTime();
@@ -72,19 +79,19 @@ public class PlayerController : MonoBehaviour
 
     private void DrainFuelOverTime()
     {
-        _fuelAmount -= _fuelDrainRate * Time.deltaTime;
-        if (_fuelAmount <= 0) _fuelAmount = 0;
+        PlayerData.DrainFuel(_fuelDrainRate, Time.deltaTime);
+        if (PlayerData._fuelAmount <= 0) PlayerData.SetFuel(0);
     }
 
     private void DrainFuel(float amountToDrain)
     {
-        _fuelAmount -= amountToDrain;
+        PlayerData.SubtractFule(amountToDrain);
         UIManager.instance.UpdateFuelDisplay();
     }
 
     private void Jump()
     {
-        if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && _fuelAmount >= _jumpFuelCost)
+        if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && PlayerData._fuelAmount >= _jumpFuelCost)
         {
             _jumpCooldownTimer = 3f;
             _playerMotor.JumpForce(_jumpForce);
@@ -129,10 +136,10 @@ public class PlayerController : MonoBehaviour
 
     public void AddFuel(float fuelToAdd)
     {
-        _fuelAmount += fuelToAdd;
-        if (_fuelAmount >= 100)
+        PlayerData.AddFuel(fuelToAdd);
+        if (PlayerData._fuelAmount >= 100)
         {
-            _fuelAmount = 100;
+            PlayerData.SetFuel(100);
         }
     }
 
@@ -153,22 +160,13 @@ public class PlayerController : MonoBehaviour
         _playerMotor.StopMovement();
         yield return new WaitForSeconds(0.55f);
         Destroy(explosionInstance);
-        if (GameManager.instance.Lives <= 0)
+        if (PlayerManager.instance.GetPlayer(0).PlayerData.Lives <= 0)
         {
             GameManager.instance.LoseCondition();
         }
+        SaveWrapper.instance.SaveGame();
         yield return new WaitForSeconds(0.1f);
         SceneHandler.instance.RestartCurrentLevel();
 
-    }
-
-    public bool SaveData<T>(string relativePath, T data)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public T LoadData<T>(string relativePath)
-    {
-        throw new System.NotImplementedException();
     }
 }

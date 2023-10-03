@@ -26,13 +26,13 @@ public class UIManager : MonoBehaviour
 
     public void UpdateFuelDisplay()
     {
-        _fuelAmountText.text = PlayerManager.instance.GetPlayer(0)._fuelAmount.ToString("0");
-        _fuelGaugeFill.fillAmount = PlayerManager.instance.GetPlayer(0)._fuelAmount / 100f;
+        _fuelAmountText.text = PlayerManager.instance.GetPlayer(0).PlayerData._fuelAmount.ToString("0");
+        _fuelGaugeFill.fillAmount = PlayerManager.instance.GetPlayer(0).PlayerData._fuelAmount / 100f;
     }
 
     public void DisplayLives() 
     {
-        _LivesText.text = "Lives: " + GameManager.instance.Lives.ToString();
+        _LivesText.text = "Lives: " + PlayerManager.instance.GetPlayer(0).PlayerData.Lives.ToString();
     }
 
     public void EnablePauseMenu() 

@@ -6,7 +6,6 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
 
-    [field: SerializeField] public int Lives { get; private set; }
     private bool _gamePaused = false;
 
     private void Awake()
@@ -40,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     public void DecrementLives() 
     {
-        Lives--;
+        PlayerManager.instance.GetPlayer(0).PlayerData.DecrementLives();
     }
 
     
