@@ -49,7 +49,7 @@ public class SceneHandler : MonoBehaviour
     public void RestartCurrentLevel() 
     {
         int sceneToLoad = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(sceneToLoad);
+        SceneManager.LoadSceneAsync(sceneToLoad);
     }
 
     private IEnumerator StartGameCoroutine() 

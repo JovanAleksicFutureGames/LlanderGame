@@ -1,34 +1,83 @@
-using System.Data;
-using System.IO;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class SaveSystem
+public class SaveSystem : MonoBehaviour
 {
-    private string dataPath = Application.persistentDataPath + "/saveData.sav";
+    /// <summary>
+    /// Base file name for save flle
+    /// Written by RobAnthem
+    /// Code found at: https://forum.unity.com/threads/complex-save-system-example.897968/
+    /// </summary>
+    public string saveFile = "savedData"; // needs an identifier if you want multiple save slots.
+    /// <summary>
+    /// The objects that wll be saved.
+    /// </summary>
+    public List<GameObject> saveObjects;
+    /// <summary>
+    /// Function to locate any objects that can be saved.
+    /// </summary>
 
-
-    public void SaveData()
+    private void Awake()
     {
-        if (File.Exists(dataPath))
-        {
-            FileStream dataStream = new FileStream(dataPath, FileMode.Create);
-            //write data
-            dataStream.Close();
-        }
+        DontDestroyOnLoad(this);
     }
 
-    public void LoadData() 
+    public void FindSaveObjects()
     {
-        if (!File.Exists(dataPath)) 
+        // We use a gameobject list because you can't find Interfaces and the system will lose references to them.
+        saveObjects = new List<GameObject>();
+        // FInd al l objects, even in a large scene this may only take a second or 2.
+        GameObject[] gos = GameObject.FindObjectsOfType<GameObject>();
+        // Iterate the objects.
+        foreach (GameObject go in gos)
         {
-            FileStream outputStream = new FileStream(dataPath, FileMode.Create);
-            //read data
-            outputStream.Close();
+            // Look for savables
+            if (go.GetComponent<ISaveable>() != null)
+            {
+                // If found, add it to our list
+                saveObjects.Add(go);
+            }
         }
-        FileStream inputStream = new FileStream(dataPath, FileMode.Open);
-        //read data
-        //apply data
-        inputStream.Close();
+    }
+    /// <summary>
+    /// Save all current saveable scene data.
+    /// </summary>
+    public void SaveData()
+    {
+        //Check if initialized
+        if (saveObjects == null || saveObjects.Count == 0)
+            FindSaveObjects();
+        // Create our data object
+        Dictionary<string, Dictionary<string, object>> allData = new Dictionary<string, Dictionary<string, object>>();
+        // Collect all the data.
+        foreach (GameObject go in saveObjects)
+        {
+            ISaveable isave = go.GetComponent<ISaveable>();
+            allData.Add(isave.UniqueID, isave.OnSave());
+        }
+        //Save the data.
+        SaveManager.Instance.SaveData(allData, UnityEngine.SceneManagement.SceneManager.GetActiveScene().name + saveFile);
+    }
+    /// <summary>
+    /// Load the data stucture from the file system.
+    /// </summary>
+    public void LoadData()
+    {
+        //Check if we have initialized
+        if (saveObjects == null || saveObjects.Count == 0)
+            FindSaveObjects();
+        //Get our data
+        Dictionary<string, Dictionary<string, object>> allData = SaveManager.Instance.LoadData<Dictionary<string, Dictionary<string, object>>>(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name + saveFile);
+        if (allData == null)
+        {
+            Debug.LogWarning("Save File NOT FOUND");
+            return;
+        }
+        //Iterate and load onto our objects
+        foreach (GameObject go in saveObjects)
+        {
+            ISaveable isave = go.GetComponent<ISaveable>();
+            isave.OnLoad(allData[isave.UniqueID]);
+        }
     }
 }

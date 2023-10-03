@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerMotor))]
 public class PlayerController : MonoBehaviour
 {
-    public bool isAlive;
+    public bool _isAlive;
 
     private PlayerInput _input;
     private PlayerMotor _playerMotor;
@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         _input = new PlayerInput();
         _playerMotor = GetComponent<PlayerMotor>();
         _playerMotor.EnableGravity();
-        isAlive = true;
+        _isAlive = true;
         _mainBody.SetActive(true);
         _exhaust.gameObject.SetActive(false);
     }
@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
         GameManager.instance.DecrementLives();
         _playerMotor.DisableGravity();
         GameObject explosionInstance = Instantiate(_explosionVFX, transform.position, Quaternion.identity);
-        isAlive = false;
+        _isAlive = false;
         _mainBody.SetActive(false);
         _playerMotor.StopMovement();
         yield return new WaitForSeconds(0.55f);
@@ -159,8 +159,6 @@ public class PlayerController : MonoBehaviour
         }
         yield return new WaitForSeconds(0.1f);
         SceneHandler.instance.RestartCurrentLevel();
-/*        UIManager.instance.DisplayLives();
-        ResetPlayer();*/
 
     }
 
