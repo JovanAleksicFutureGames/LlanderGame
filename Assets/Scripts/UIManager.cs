@@ -36,8 +36,7 @@ public class UIManager : MonoBehaviour
     public void UpdateHealthDisplay() 
     {
         _heathAmountText.text = PlayerManager.instance.GetPlayer(0).PlayerData.Health.ToString("0");
-        _healthGaugeFill.fillAmount = 
-            PlayerManager.instance.GetPlayer(0).PlayerData.Health / 5f;
+        _healthGaugeFill.fillAmount = PlayerManager.instance.GetPlayer(0).PlayerData.Health / 5f;
     }
 
     public void DisplayLives() 

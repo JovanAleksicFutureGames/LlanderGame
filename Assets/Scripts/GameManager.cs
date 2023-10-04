@@ -59,4 +59,11 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
         Debug.Log("Game Paused");
     } 
+
+    public void GoToMainMenu() 
+    {
+        SceneHandler.instance.MainMenu();
+        _gamePaused = false;
+        Time.timeScale = 1;
+    }
 }

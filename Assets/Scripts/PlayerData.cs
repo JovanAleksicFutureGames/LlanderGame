@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Json;
 using UnityEngine;
 
 public class PlayerData : MonoBehaviour, ISaveable
@@ -24,7 +25,7 @@ public class PlayerData : MonoBehaviour, ISaveable
         UIManager.instance.UpdateFuelDisplay();
     }
 
-    public void SubtractFule(float amountToSubtract) 
+    public void SubtractFuel(float amountToSubtract) 
     {
         _fuelAmount -= amountToSubtract;
         UIManager.instance.UpdateFuelDisplay();
@@ -33,6 +34,10 @@ public class PlayerData : MonoBehaviour, ISaveable
     public void AddFuel(float amountToAdd) 
     {
         _fuelAmount += amountToAdd;
+        if(_fuelAmount >= 100) 
+        {
+            SetFuel(100);
+        }
         UIManager.instance.UpdateFuelDisplay();
     }
 
@@ -40,6 +45,15 @@ public class PlayerData : MonoBehaviour, ISaveable
     {
         _fuelAmount = newAmount;
         UIManager.instance.UpdateFuelDisplay();
+    }
+    public void AddHealth(int amountToadd) 
+    {
+        Health += amountToadd;
+        if(Health >= 5) 
+        {
+            Health = 5;
+        }
+        UIManager.instance.UpdateHealthDisplay();
     }
 
     public void DecrementHealth() 

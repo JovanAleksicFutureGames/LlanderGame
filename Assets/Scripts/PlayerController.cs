@@ -6,11 +6,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public bool _isAlive;
-
     private PlayerInput _input;
     private PlayerMotor _playerMotor;
     public PlayerData PlayerData { get; private set; }
-
     [field: SerializeField] public float _rotationSpeed { get; private set; }
     [field: SerializeField] public float _forceAmount { get; private set; }
 
@@ -87,7 +85,7 @@ public class PlayerController : MonoBehaviour
 
     private void DrainFuel(float amountToDrain)
     {
-        PlayerData.SubtractFule(amountToDrain);
+        PlayerData.SubtractFuel(amountToDrain);
     }
 
     private void Jump()
