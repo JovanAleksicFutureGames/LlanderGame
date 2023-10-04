@@ -23,7 +23,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private ParticleSystem _exhaust;
     [SerializeField] private GameObject _mainBody;
 
-    private float xInput;
+    private float _xInput;
+    private float _collisionCooldown = 1f;
 
     //temp - will migrate to Score and Game Manager scripts
 
@@ -48,6 +49,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         _jumpCooldownTimer -= Time.deltaTime;
+        _collisionCooldown -= Time.deltaTime;
         RotateShip();
     }
 
@@ -60,8 +62,8 @@ public class PlayerController : MonoBehaviour
 
     private void RotateShip()
     {
-        xInput = -_input.Player.Rotate.ReadValue<Vector2>().x;
-        transform.Rotate(Vector3.forward * xInput * _rotationSpeed * Time.fixedDeltaTime);
+        _xInput = -_input.Player.Rotate.ReadValue<Vector2>().x;
+        transform.Rotate(Vector3.forward * _xInput * _rotationSpeed * Time.fixedDeltaTime);
     }
 
     private void Boost()
@@ -91,7 +93,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && PlayerData._fuelAmount >= _jumpFuelCost)
         {
-            _jumpCooldownTimer = 3f;
+            _jumpCooldownTimer = 1f;
             _playerMotor.JumpForce(_jumpForce);
             DrainFuel(_jumpFuelCost);
         }
@@ -113,18 +115,28 @@ public class PlayerController : MonoBehaviour
         _mainBody.SetActive(true);
         _playerMotor.EnableGravity();
         PlayerData.SetFuel(100f);
+        PlayerData.SetHealth(5);
         transform.position = new Vector3(-12.25f, -2.25f, 0f);
     }
 
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 3)
+
+        if (collision.gameObject.layer == 3 && _collisionCooldown <= 0)
         {
             //socring and end game logic goes here
-            //TODO: Cooldown that prevents us from colliding with multiple colliders
+            //Done: Cooldown that prevents us from colliding with multiple colliders
             //TODO: Blinking effects
-            StartCoroutine(PlayerDeath());
+            //TODO: Instantiate(collision effect)
+            _collisionCooldown = 3;
+            PlayerData.instance.DecrementHealth();
+            if(PlayerData.instance.Health <= 0) 
+            {
+                PlayerData.instance.SetHealth(0);
+                StartCoroutine(PlayerDeath());
+            }
+
         }
         else if (collision.gameObject.layer == 6)
         {

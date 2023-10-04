@@ -8,6 +8,7 @@ public class PlayerData : MonoBehaviour, ISaveable
 
     [field: SerializeField] public float _fuelAmount { get; private set; }
     [field: SerializeField] public int Lives { get; private set; }
+    [field: SerializeField] public int Health { get; private set; }
 
     public string m_UniqueID = "PlayerData";
     public string UniqueID {get { return m_UniqueID; }set { m_UniqueID = value; } }
@@ -39,6 +40,18 @@ public class PlayerData : MonoBehaviour, ISaveable
     {
         _fuelAmount = newAmount;
         UIManager.instance.UpdateFuelDisplay();
+    }
+
+    public void DecrementHealth() 
+    {
+        Health--;
+        UIManager.instance.UpdateHealthDisplay();
+    }
+
+    public void SetHealth(int amount) 
+    {
+        Health = amount;
+        UIManager.instance.UpdateHealthDisplay();
     }
 
     public void DecrementLives() 

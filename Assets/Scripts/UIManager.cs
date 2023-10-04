@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _fuelAmountText;
     [SerializeField] private Image _fuelGaugeFill;
+    [SerializeField] private TextMeshProUGUI _heathAmountText;
+    [SerializeField] private Image _healthGaugeFill;
 
     private void Awake()
     {
@@ -21,6 +23,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         UpdateFuelDisplay();
+        UpdateHealthDisplay();
         DisplayLives();
     }
 
@@ -28,6 +31,13 @@ public class UIManager : MonoBehaviour
     {
         _fuelAmountText.text = PlayerManager.instance.GetPlayer(0).PlayerData._fuelAmount.ToString("0");
         _fuelGaugeFill.fillAmount = PlayerManager.instance.GetPlayer(0).PlayerData._fuelAmount / 100f;
+    }
+
+    public void UpdateHealthDisplay() 
+    {
+        _heathAmountText.text = PlayerManager.instance.GetPlayer(0).PlayerData.Health.ToString("0");
+        _healthGaugeFill.fillAmount = 
+            PlayerManager.instance.GetPlayer(0).PlayerData.Health / 5f;
     }
 
     public void DisplayLives() 
