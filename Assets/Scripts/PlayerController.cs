@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         //SaveWrapper.instance.LoadGame();
+
     }
 
     private void Update()
@@ -122,7 +123,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-
         if (collision.gameObject.layer == 3 && _collisionCooldown <= 0)
         {
             //socring and end game logic goes here
@@ -137,6 +137,10 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(PlayerDeath());
             }
 
+        }
+        if(collision.gameObject.layer == 3 && PlayerData.instance._fuelAmount < .5f)
+        {
+            StartCoroutine(PlayerDeath());
         }
         else if (collision.gameObject.layer == 6)
         {
@@ -163,6 +167,7 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator PlayerDeath()
     {
+        PlayerData.instance.SetHealth(0);
         _playerMotor.DisableGravity();
         GameObject explosionInstance = Instantiate(_explosionVFX, transform.position, Quaternion.identity);
         _isAlive = false;
