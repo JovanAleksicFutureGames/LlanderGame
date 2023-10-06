@@ -29,9 +29,4 @@ public class PlayerManager : MonoBehaviour
     {
         return playerList[i];
     }
-
-    public void SetLives(int amount) 
-    {
-        PlayerData.instance.SetLives(amount);
-    }
 }

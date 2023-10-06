@@ -34,7 +34,11 @@ public class GameManager : MonoBehaviour
 
     public void LoseCondition() 
     {
-        Debug.Log("You have lost the game");
+        //TOOD: finish lose condition
+        //TODO: lose sound FX
+        //TOOD: lose visual FX
+        //TODO: display lose scene
+        SceneHandler.instance.MainMenu();
     }
 
     public void DecrementLives() 

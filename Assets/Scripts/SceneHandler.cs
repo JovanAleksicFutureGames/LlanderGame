@@ -6,6 +6,8 @@ public class SceneHandler : MonoBehaviour
 {
     public static SceneHandler instance;
 
+    public int sceneCountTest;
+
     private DummyRocket _dummyRocket;
     private void Awake()
     {
@@ -16,23 +18,24 @@ public class SceneHandler : MonoBehaviour
         }
         else 
             _dummyRocket = null;
+        sceneCountTest = SceneManager.sceneCountInBuildSettings;
     }
 
     public void NextScene()
     {
-        Debug.Log("Current scene loaded: " + SceneManager.GetActiveScene().buildIndex);
-        if (SceneManager.GetActiveScene().buildIndex >= 3)
+        if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
         {
             MainMenu();
         }
-        else
-            SceneManager.LoadSceneAsync(GetNexSceneIndex());
+        else 
+        {
+            SceneManager.LoadSceneAsync(GetNextSceneIndex());
+        }
     }
 
-    public int GetNexSceneIndex() 
+    public int GetNextSceneIndex() 
     {
         int currentIndex = SceneManager.GetActiveScene().buildIndex;
-        Debug.Log(currentIndex);
         return currentIndex + 1;
     }
 
@@ -56,7 +59,7 @@ public class SceneHandler : MonoBehaviour
     {
         _dummyRocket.LevelStartBehaviour();
         yield return new WaitForSeconds(1.5f);
-        SceneManager.LoadSceneAsync(GetNexSceneIndex());
+        SceneManager.LoadSceneAsync(GetNextSceneIndex());
     }
 
 }

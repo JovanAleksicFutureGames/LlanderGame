@@ -29,8 +29,8 @@ public class UIManager : MonoBehaviour
 
     public void UpdateFuelDisplay()
     {
-        _fuelAmountText.text = PlayerManager.instance.GetPlayer(0).PlayerData._fuelAmount.ToString("0");
-        _fuelGaugeFill.fillAmount = PlayerManager.instance.GetPlayer(0).PlayerData._fuelAmount / 100f;
+        _fuelAmountText.text = PlayerManager.instance.GetPlayer(0).PlayerData.FuelAmount.ToString("0");
+        _fuelGaugeFill.fillAmount = PlayerManager.instance.GetPlayer(0).PlayerData.FuelAmount / 100f;
     }
 
     public void UpdateHealthDisplay() 

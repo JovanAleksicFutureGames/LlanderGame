@@ -22,12 +22,12 @@ public class Pickup : MonoBehaviour
             Debug.Log(other.name);
             if (_pickupType == PickupType.Fuel)
             {
-                PlayerData.instance.AddFuel(_resourceToAdd);
+                other.GetComponent<PlayerData>().AddFuel(_resourceToAdd);
                 Destroy(gameObject, 0.1f);
             }
             if (_pickupType == PickupType.Health)
             {
-                PlayerData.instance.AddHealth((int)_resourceToAdd);
+                other.GetComponent<PlayerData>().AddHealth((int)_resourceToAdd);
                 Destroy(gameObject, 0.1f);
             }
         }

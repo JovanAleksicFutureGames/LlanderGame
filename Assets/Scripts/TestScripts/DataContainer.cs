@@ -4,26 +4,13 @@ using UnityEngine;
 [System.Serializable]
 public class DataContainer : MonoBehaviour, ISaveable
 {
-    public string m_UniqueID;
-    [SerializeField] private string objectName;
-    [SerializeField] private int level;
-    [SerializeField] private string characterClass;
-
-    public string UniqueID { get { return m_UniqueID; } set { m_UniqueID = value; } }
-
-    public void OnLoad(Dictionary<string, object> data)
+    public object CaptureState()
     {
-        objectName = (string)data[nameof(objectName)];
-        level = (int)data[nameof(level)];
-        characterClass = (string)data[nameof(characterClass)];
+        throw new System.NotImplementedException();
     }
 
-    public Dictionary<string, object> OnSave()
+    public void RestoreState(object state)
     {
-        Dictionary<string, object> data = new Dictionary<string, object>();
-        data.Add(nameof(objectName), objectName);
-        data.Add(nameof(level), level);
-        data.Add(nameof(characterClass), characterClass);
-        return data;
+        throw new System.NotImplementedException();
     }
 }

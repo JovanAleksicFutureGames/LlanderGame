@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     public bool _isAlive;
     private PlayerInput _input;
     private PlayerMotor _playerMotor;
-    public PlayerData PlayerData { get; private set; }
+    [field: SerializeField] public PlayerData PlayerData { get; private set; }
     [field: SerializeField] public float _rotationSpeed { get; private set; }
     [field: SerializeField] public float _forceAmount { get; private set; }
 
@@ -67,7 +67,7 @@ public class PlayerController : MonoBehaviour
 
     private void Boost()
     {
-        if (_input.Player.Boost.IsPressed() && PlayerData._fuelAmount > 0)
+        if (_input.Player.Boost.IsPressed() && PlayerData.FuelAmount > 0)
         {
             _playerMotor.AddUpForce(_forceAmount);
             DrainFuelOverTime();
@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
     private void DrainFuelOverTime()
     {
         PlayerData.DrainFuel(_fuelDrainRate, Time.deltaTime);
-        if (PlayerData._fuelAmount <= 0) PlayerData.SetFuel(0);
+        if (PlayerData.FuelAmount <= 0) PlayerData.SetFuel(0);
     }
 
     private void DrainFuel(float amountToDrain)
@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && PlayerData._fuelAmount >= _jumpFuelCost)
+        if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && PlayerData.FuelAmount >= _jumpFuelCost)
         {
             _jumpCooldownTimer = 1f;
             _playerMotor.JumpForce(_jumpForce);
@@ -121,6 +121,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        PlayerData data = collision.gameObject.GetComponent<PlayerData>();
         if (collision.gameObject.layer == 3 && _collisionCooldown <= 0)
         {
             //socring and end game logic goes here
@@ -128,21 +129,22 @@ public class PlayerController : MonoBehaviour
             //TODO: Blinking effects
             //TODO: Instantiate(collision effect)
             _collisionCooldown = 3;
-            PlayerData.instance.DecrementHealth();
-            if(PlayerData.instance.Health <= 0) 
+
+            data.DecrementHealth();
+            if(data.Health <= 0) 
             {
-                PlayerData.instance.SetHealth(0);
-                StartCoroutine(PlayerDeath());
+                data.SetHealth(0);
+                StartCoroutine(PlayerDeath(data));
             }
 
         }
-        if(collision.gameObject.layer == 3 && PlayerData.instance._fuelAmount < .5f)
+        if(collision.gameObject.layer == 3 && collision.gameObject.GetComponent<PlayerData>().FuelAmount < .5f)
         {
-            StartCoroutine(PlayerDeath());
+            StartCoroutine(PlayerDeath(data));
         }
         else if (collision.gameObject.layer == 6)
         {
-            GameManager.instance.WinCondition();
+            //set up the portal functionality
         }
     }
 
@@ -151,7 +153,7 @@ public class PlayerController : MonoBehaviour
     public void AddFuel(float fuelToAdd)
     {
         PlayerData.AddFuel(fuelToAdd);
-        if (PlayerData._fuelAmount >= 100)
+        if (PlayerData.FuelAmount >= 100)
         {
             PlayerData.SetFuel(100);
         }
@@ -163,9 +165,9 @@ public class PlayerController : MonoBehaviour
     }
     //coroutines
 
-    private IEnumerator PlayerDeath()
+    private IEnumerator PlayerDeath(PlayerData data)
     {
-        PlayerData.instance.SetHealth(0);
+        data.SetHealth(0);
         _playerMotor.DisableGravity();
         GameObject explosionInstance = Instantiate(_explosionVFX, transform.position, Quaternion.identity);
         _isAlive = false;
@@ -176,7 +178,7 @@ public class PlayerController : MonoBehaviour
         Destroy(explosionInstance);
         if (PlayerManager.instance.GetPlayer(0).PlayerData.Lives <= 0)
         {
-            PlayerManager.instance.SetLives(0);
+            data.SetLives(0);
             GameManager.instance.LoseCondition();
         }
         //SaveWrapper.instance.SaveGame();
