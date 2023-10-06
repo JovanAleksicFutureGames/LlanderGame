@@ -265,8 +265,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 3
+  m_Radius: 0.25
+  m_Height: 2.65
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &9096667876778176465
@@ -294,7 +294,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &8123635790320291360
 MonoBehaviour:
@@ -308,16 +308,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b68ee4df7e606f54b8cab3ded3d35d56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isAlive: 0
-  _rotationSpeed: 30
-  _forceAmount: 50
-  _fuelAmount: 100
-  _fuelDrainRate: 5
+  _isAlive: 0
+  <PlayerData>k__BackingField: {fileID: 11400000, guid: ceeca668a9dba3c48be6a67dcb3de4f8, type: 2}
+  <_rotationSpeed>k__BackingField: 30
+  <_forceAmount>k__BackingField: 50
+  <_fuelDrainRate>k__BackingField: 5
+  _jumpForce: 75
+  _jumpCooldownTimer: 0
+  _jumpFuelCost: 15
   _exhaust: {fileID: 2631674124709021979}
   _mainBody: {fileID: 6743998773528724781}
   _explosionVFX: {fileID: 1503011241120423026, guid: 835dabc48d4fcd344a1ee3df6b9cea42, type: 3}
-  _fuelAmountText: {fileID: 0}
-  _fuelGaugeFill: {fileID: 0}
 --- !u!114 &1456664504716276489
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -596,6 +597,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RocketFireParticle
       objectReference: {fileID: 0}
+    - target: {fileID: 1503011241120423026, guid: 408d06679030c754ca322cc32d22e708, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3682257093911512619, guid: 408d06679030c754ca322cc32d22e708, type: 3}
       propertyPath: lengthInSec
       value: 0.25
@@ -610,7 +615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9168607670644029022, guid: 408d06679030c754ca322cc32d22e708, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.557
+      value: -0.575
       objectReference: {fileID: 0}
     - target: {fileID: 9168607670644029022, guid: 408d06679030c754ca322cc32d22e708, type: 3}
       propertyPath: m_LocalPosition.z

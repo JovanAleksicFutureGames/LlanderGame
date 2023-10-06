@@ -415,25 +415,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9120629813994088766}
     m_Modifications:
-    - target: {fileID: 235401314760823618, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3817937535449294695, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
       propertyPath: m_Name
       value: PlayerOne
-      objectReference: {fileID: 0}
-    - target: {fileID: 4030620874630993543, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: m_Height
-      value: 2.65
-      objectReference: {fileID: 0}
-    - target: {fileID: 4030620874630993543, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: m_Radius
-      value: 0.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 7539840395353848174, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -0.575
       objectReference: {fileID: 0}
     - target: {fileID: 7850162031317515341, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
       propertyPath: m_LocalPosition.x
@@ -475,72 +459,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: _hitFX
-      value: 
-      objectReference: {fileID: 1025285306637258, guid: d8f0099df63275647a8bcf646df1ca00, type: 3}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: isAlive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: _exhaust
-      value: 
-      objectReference: {fileID: 1346505482023930510}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: _jumpForce
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: _explosionVFX
-      value: 
-      objectReference: {fileID: 1503011241120423026, guid: 835dabc48d4fcd344a1ee3df6b9cea42, type: 3}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: _fuelGaugeFill
-      value: 
-      objectReference: {fileID: 5634291758010962300}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: _fuelAmountText
-      value: 
-      objectReference: {fileID: 2999385074324655577}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: <PlayerData>k__BackingField
-      value: 
-      objectReference: {fileID: 11400000, guid: ceeca668a9dba3c48be6a67dcb3de4f8, type: 2}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: <IsPlayerOne>k__BackingField
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: <_fuelAmount>k__BackingField
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: <_forceAmount>k__BackingField
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: <_fuelDrainRate>k__BackingField
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8123635790320291360, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: <_rotationSpeed>k__BackingField
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 9096667876778176465, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-      propertyPath: m_Constraints
-      value: 112
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
---- !u!198 &1346505482023930510 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 2631674124709021979, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}
-  m_PrefabInstance: {fileID: 3902978439694074773}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6546908881422467032 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7850162031317515341, guid: c9ea834917619084ea6cb8ace52b1877, type: 3}

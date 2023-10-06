@@ -7,7 +7,7 @@ public class Turrets : MonoBehaviour
 {
     private bool _targetInRange = false;
     private float _rangeDistance = 15f;
-    private PlayerData _target;
+    private Transform _target;
 
     [SerializeField] private Transform _muzzlePosition;
     [SerializeField] private GameObject _projectilePrefab;
@@ -16,16 +16,17 @@ public class Turrets : MonoBehaviour
     private void Awake()
     {
         //TOOD: FIX EVERYTHING YOU BROKE
+        _target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void Update()
     {
-        _targetInRange = Vector3.Distance(transform.position, _target.GetComponent<Transform>().position) <= _rangeDistance;
+        _targetInRange = Vector3.Distance(transform.position, _target.position) <= _rangeDistance;
 
         if (_targetInRange) 
         {
             
-            transform.LookAt(_target.GetComponent<Transform>().position);
+            transform.LookAt(_target.position);
             _shotCooldown -= Time.deltaTime;
             if(_shotCooldown <= 0f)
             {

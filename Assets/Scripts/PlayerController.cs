@@ -32,7 +32,6 @@ public class PlayerController : MonoBehaviour
     {
         _input = new PlayerInput();
         _playerMotor = GetComponent<PlayerMotor>();
-        PlayerData = GetComponent<PlayerData>();
         _playerMotor.EnableGravity();
         _isAlive = true;
         _mainBody.SetActive(true);
@@ -121,7 +120,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        PlayerData data = collision.gameObject.GetComponent<PlayerData>();
         if (collision.gameObject.layer == 3 && _collisionCooldown <= 0)
         {
             //socring and end game logic goes here
@@ -130,17 +128,17 @@ public class PlayerController : MonoBehaviour
             //TODO: Instantiate(collision effect)
             _collisionCooldown = 3;
 
-            data.DecrementHealth();
-            if(data.Health <= 0) 
+            PlayerData.DecrementHealth();
+            if(PlayerData.Health <= 0) 
             {
-                data.SetHealth(0);
-                StartCoroutine(PlayerDeath(data));
+                PlayerData.SetHealth(0);
+                StartCoroutine(PlayerDeath(PlayerData));
             }
 
         }
-        if(collision.gameObject.layer == 3 && collision.gameObject.GetComponent<PlayerData>().FuelAmount < .5f)
+        if(collision.gameObject.layer == 3 && PlayerData.FuelAmount < .5f)
         {
-            StartCoroutine(PlayerDeath(data));
+            StartCoroutine(PlayerDeath(PlayerData));
         }
         else if (collision.gameObject.layer == 6)
         {
