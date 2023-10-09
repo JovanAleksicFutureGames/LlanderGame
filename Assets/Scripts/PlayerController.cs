@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Components")]
     [SerializeField] private ParticleSystem _exhaust;
+    [SerializeField] private ParticleSystem _jumpFX;
     [SerializeField] private GameObject _mainBody;
 
     private float _xInput;
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
         _isAlive = true;
         _mainBody.SetActive(true);
         _exhaust.gameObject.SetActive(false);
+        _jumpFX.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -92,6 +94,7 @@ public class PlayerController : MonoBehaviour
         if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && PlayerData.FuelAmount >= _jumpFuelCost)
         {
             _jumpCooldownTimer = 1f;
+            StartCoroutine(PlayJumpFX());
             _playerMotor.JumpForce(_jumpForce);
             DrainFuel(_jumpFuelCost);
         }
@@ -183,5 +186,12 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);
         ResetPlayer();
 
+    }
+
+    private IEnumerator PlayJumpFX()
+    {
+        _jumpFX.gameObject.SetActive(true);
+        yield return new WaitForSeconds(.2f);
+        _jumpFX.gameObject.SetActive(false);
     }
 }

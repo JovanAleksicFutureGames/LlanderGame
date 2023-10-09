@@ -78,6 +78,18 @@ public class PlayerData : ScriptableObject, ISaveable
 
     public void RestoreState(object state)
     {
+        if (FuelAmount == 0 || Health == 0) 
+        {
+            FuelAmount = 100f;
+            Health = 5;
+            
+        }
+        if(Lives == 0) 
+        {
+            //restart game
+            Lives = 3;
+        }
+
         FuelAmount = (float)state;
         Health = (int)state;
         Lives = (int)state;

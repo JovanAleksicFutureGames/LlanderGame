@@ -5,10 +5,9 @@ using UnityEngine.SceneManagement;
 public class SceneHandler : MonoBehaviour
 {
     public static SceneHandler instance;
-
     public int sceneCountTest;
-
     private DummyRocket _dummyRocket;
+    private Fader _fader;
     private void Awake()
     {
         instance = this;
@@ -19,6 +18,7 @@ public class SceneHandler : MonoBehaviour
         else 
             _dummyRocket = null;
         sceneCountTest = SceneManager.sceneCountInBuildSettings;
+        _fader = GameObject.FindObjectOfType<Fader>();
     }
 
     public void NextScene()
