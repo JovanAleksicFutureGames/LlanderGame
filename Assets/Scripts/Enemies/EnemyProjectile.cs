@@ -6,6 +6,7 @@ public class EnemyProjectile : MonoBehaviour
 {
     private Rigidbody _rigidBody;
     [SerializeField] private float _moveSpeed = 15f;
+    [SerializeField] private GameObject _explosionPrefab;
 
     private void Awake()
     {
@@ -16,9 +17,14 @@ public class EnemyProjectile : MonoBehaviour
         _rigidBody.AddForce(transform.forward * _moveSpeed, ForceMode.Impulse);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision other)
     {
-        Destroy(this);
+        if(!other.gameObject.CompareTag("Enemy"))
+        {
+            GameObject instance = Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+            Destroy(this.gameObject);
+        }
+
     }
 
 }

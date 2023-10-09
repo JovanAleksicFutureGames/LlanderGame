@@ -17,7 +17,7 @@ public class EnviornmentSpawner : MonoBehaviour
     private void Awake()
     {
         _prefabToSpawn = Random.Range(0, _envPrefabs.Length);
-        _spawnedObj = Instantiate(_envPrefabs[_prefabToSpawn], transform.position, transform.rotation);
+        _spawnedObj = Instantiate(_envPrefabs[_prefabToSpawn], transform.position, GetRandomRotation());
         _spawnedObj.layer = 3;
         _meshFilter = GetComponent<MeshFilter>();
         _meshRenderer = GetComponent<MeshRenderer>();
@@ -28,6 +28,14 @@ public class EnviornmentSpawner : MonoBehaviour
     private void Start()
     {
         SpawnObject();
+    }
+
+    private Quaternion GetRandomRotation() 
+    {
+        return Quaternion.Euler(
+            Random.Range(0f, 360f), 
+            Random.Range(0f, 360f), 
+            Random.Range(0f, 360f));
     }
 
     private void SpawnObject() 

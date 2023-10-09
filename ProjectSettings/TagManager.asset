@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Start
   - GameManager
+  - Enemy
   layers:
   - Default
   - TransparentFX

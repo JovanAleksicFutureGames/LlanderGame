@@ -149,7 +149,7 @@ Material:
     - _PlanetSurfaceContrast: -2.92
     - _PlanetSurfaceFloat: 2
     - _PlanetSurfaceTiling: 1
-    - _QueueControl: -1
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _RimPower: 2.95
     - _Scale: -0

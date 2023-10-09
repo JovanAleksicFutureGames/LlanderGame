@@ -56,6 +56,10 @@ public class PlayerController : MonoBehaviour
         _jumpCooldownTimer -= Time.deltaTime;
         _collisionCooldown -= Time.deltaTime;
         RotateShip();
+        if(PlayerData.FuelAmount <= 0) 
+        {
+            LoseControl();
+        }
     }
 
     private void FixedUpdate()
@@ -67,20 +71,41 @@ public class PlayerController : MonoBehaviour
 
     private void RotateShip()
     {
-        _xInput = -_input.Player.Rotate.ReadValue<Vector2>().x;
-        transform.Rotate(Vector3.forward * _xInput * _rotationSpeed * Time.fixedDeltaTime);
+        if(PlayerData.FuelAmount > 0) 
+        {
+            _xInput = -_input.Player.Rotate.ReadValue<Vector2>().x;
+            transform.Rotate(Vector3.forward * _xInput * _rotationSpeed * Time.fixedDeltaTime);
+        }
+
+    }
+
+    private void LoseControl() 
+    {
+        transform.Rotate(Vector3.forward * 10f * _rotationSpeed * Time.deltaTime);
     }
 
     private void Boost()
     {
+        if (_input.Player.Boost.WasPressedThisFrame())
+        {
+            AudioManager.instance.SetEngineClip();
+        }
+        else if (_input.Player.Boost.WasReleasedThisFrame())
+        {
+            AudioManager.instance.StopPlayerSound();
+        }
+
         if (_input.Player.Boost.IsPressed() && PlayerData.FuelAmount > 0)
         {
             _playerMotor.AddUpForce(_forceAmount);
             DrainFuelOverTime();
+            AudioManager.instance.PlayerEnglineSound();
             _exhaust.gameObject.SetActive(true);
         }
-        else
+        else 
+        {
             _exhaust.gameObject.SetActive(false);
+        }
     }
 
     private void DrainFuelOverTime()
@@ -99,6 +124,7 @@ public class PlayerController : MonoBehaviour
         if (_input.Player.Jump.IsPressed() && _jumpCooldownTimer <= 0f && PlayerData.FuelAmount >= _jumpFuelCost)
         {
             _jumpCooldownTimer = 1f;
+            AudioManager.instance.PlayerPlayJumpSound();
             StartCoroutine(PlayJumpFX());
             _playerMotor.JumpForce(_jumpForce);
             DrainFuel(_jumpFuelCost);
@@ -179,6 +205,7 @@ public class PlayerController : MonoBehaviour
         _isAlive = false;
         _mainBody.SetActive(false);
         GameManager.instance.DecrementLives();
+        AudioManager.instance.PlayerPlayExplosionSound();
         _playerMotor.StopMovement();
         yield return new WaitForSeconds(0.55f);
         Destroy(explosionInstance);
