@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   <FuelAmount>k__BackingField: 100
-  <Lives>k__BackingField: 3
-  <Health>k__BackingField: 5
+  <Lives>k__BackingField: 5
+  <Health>k__BackingField: 3

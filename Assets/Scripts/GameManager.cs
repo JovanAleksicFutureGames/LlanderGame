@@ -13,6 +13,15 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
 
+    private void Start()
+    {
+/*        PlayerData player = FindObjectOfType<PlayerData>();
+        if (player.Lives <= 0) 
+        {
+            player.SetDefaultStats();
+        }*/
+    }
+
     private void Update()
     {
         if (PlayerManager.instance.GetPlayer(0).HasPressedPause() && !_gamePaused)

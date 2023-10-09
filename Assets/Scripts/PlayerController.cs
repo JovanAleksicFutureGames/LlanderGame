@@ -38,6 +38,11 @@ public class PlayerController : MonoBehaviour
         _mainBody.SetActive(true);
         _exhaust.gameObject.SetActive(false);
         _jumpFX.gameObject.SetActive(false);
+
+        if(PlayerData.Health <= 0 && PlayerData.FuelAmount <= 0) 
+        {
+            PlayerData.SetDefaultStats();
+        }
     }
 
     private void Start()
@@ -139,7 +144,7 @@ public class PlayerController : MonoBehaviour
             }
 
         }
-        if(collision.gameObject.layer == 3 && PlayerData.FuelAmount < .5f)
+        if(PlayerData.FuelAmount < .5f)
         {
             StartCoroutine(PlayerDeath(PlayerData));
         }

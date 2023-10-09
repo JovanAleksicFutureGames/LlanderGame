@@ -8,6 +8,7 @@ public class EnviornmentSpawner : MonoBehaviour
     [SerializeField] private GameObject[] _envPrefabs;
     private MeshRenderer _meshRenderer;
     private MeshFilter _meshFilter;
+    private MeshCollider _meshCollider;
 
 
     private GameObject _spawnedObj;
@@ -20,6 +21,8 @@ public class EnviornmentSpawner : MonoBehaviour
         _spawnedObj.layer = 3;
         _meshFilter = GetComponent<MeshFilter>();
         _meshRenderer = GetComponent<MeshRenderer>();
+        _meshCollider = GetComponent<MeshCollider>();
+        _meshCollider.convex = true;
     }
 
     private void Start()
@@ -31,5 +34,15 @@ public class EnviornmentSpawner : MonoBehaviour
     {
         _meshFilter = _spawnedObj.GetComponent<MeshFilter>();
         _meshRenderer = _spawnedObj.GetComponent<MeshRenderer>();
+/*        _meshCollider.enabled = false;
+        RaycastHit hit;
+        bool isIntersecting = Physics.Raycast(_spawnedObj.transform.position, Vector3.up, out hit, 5f);
+        if (isIntersecting) 
+        {
+            Destroy(_spawnedObj);
+            _meshFilter = _spawnedObj.GetComponent<MeshFilter>();
+            _meshRenderer = _spawnedObj.GetComponent<MeshRenderer>();
+            _meshCollider.enabled = true;
+        }*/
     }
 }

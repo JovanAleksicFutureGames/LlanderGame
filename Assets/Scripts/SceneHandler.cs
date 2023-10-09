@@ -57,9 +57,11 @@ public class SceneHandler : MonoBehaviour
 
     private IEnumerator StartGameCoroutine() 
     {
+        _fader.FadeOut(1f);
         _dummyRocket.LevelStartBehaviour();
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadSceneAsync(GetNextSceneIndex());
+        _fader.FadeIn(1f);
     }
 
 }
