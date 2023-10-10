@@ -258,8 +258,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d577689f69f3c64899fb80dbb968271, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _muzzlePosition: {fileID: 0}
-  _projectilePrefab: {fileID: 7706429686202968506, guid: 4b823e8dfae603749ab3626408e87271, type: 3}
+  _muzzlePosition: {fileID: 8442459006153880456}
+  _projectilePrefab: {fileID: 6453693728210076527, guid: ae932428fe165824a8996fa24ffa15f3, type: 3}
   _shotCooldown: 3
 --- !u!1 &7600442815132080713
 GameObject:
