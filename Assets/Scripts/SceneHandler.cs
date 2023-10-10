@@ -69,6 +69,7 @@ public class SceneHandler : MonoBehaviour
 
         _fader.FadeOut(1f);
         _dummyRocket.LevelStartBehaviour();
+        AudioManager.instance.PressButton();
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadSceneAsync(GetNextSceneIndex());
         if (GameManager.instance != null)

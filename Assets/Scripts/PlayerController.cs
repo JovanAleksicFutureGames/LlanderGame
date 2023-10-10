@@ -146,10 +146,10 @@ public class PlayerController : MonoBehaviour
             //TODO: Blinking effects
             //TODO: Instantiate(collision effect)
             _collisionCooldown = 3;
-            AudioManager.instance.PlayerTakeDamage();
             StartCoroutine(PlayDamageFX());
             PlayerData.DecrementHealth();
-            if(PlayerData.Health <= 0) 
+            AudioManager.instance.PlayerTakeDamage();
+            if (PlayerData.Health <= 0) 
             {
                 PlayerData.SetHealth(0);
                 StartCoroutine(PlayerDeath(PlayerData));

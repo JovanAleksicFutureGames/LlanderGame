@@ -257,5 +257,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _muzzlePosition: {fileID: 7479117417882070832}
-  _projectilePrefab: {fileID: 5593945561211226555, guid: 7ee1330c6f13d66409d13e78c88b6e5a, type: 3}
+  _projectilePrefab: {fileID: 7706429686202968506, guid: 4b823e8dfae603749ab3626408e87271, type: 3}
   _shotCooldown: 3

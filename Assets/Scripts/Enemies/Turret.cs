@@ -22,6 +22,7 @@ public class Turrets : MonoBehaviour
     private void Update()
     {
         _targetInRange = Vector3.Distance(transform.position, _target.position) <= _rangeDistance;
+        _muzzlePosition.rotation = transform.rotation;
 
         if (_targetInRange) 
         {
