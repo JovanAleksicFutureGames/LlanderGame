@@ -6,7 +6,6 @@ using UnityEngine;
 public class PlayerData : ScriptableObject, ISaveable
 {
     [field: SerializeField] public float FuelAmount { get; private set; } = 100f;
-    [field: SerializeField] public int Lives { get; private set; } = 3;
     [field: SerializeField] public int Health { get; private set; } = 5;
 
     
@@ -60,19 +59,6 @@ public class PlayerData : ScriptableObject, ISaveable
         UIManager.instance.UpdateHealthDisplay();
     }
 
-    public void DecrementLives() 
-    {
-        Lives--;
-        if (Lives <= 0) Lives = 0;
-        UIManager.instance.DisplayLives();
-    }
-
-    public void SetLives(int amount) 
-    {
-        Lives = amount;
-        UIManager.instance.DisplayLives();
-    }
-
     public object CaptureState()
     {
         return this;
@@ -86,21 +72,14 @@ public class PlayerData : ScriptableObject, ISaveable
             Health = 5;
             
         }
-        if(Lives == 0) 
-        {
-            //restart game
-            Lives = 3;
-        }
 
         FuelAmount = (float)state;
         Health = (int)state;
-        Lives = (int)state;
     }
 
     public void SetDefaultStats() 
     {
         FuelAmount = 100f;
         Health = 5;
-        Lives = 3;
     }
 }

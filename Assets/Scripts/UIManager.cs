@@ -7,7 +7,6 @@ public class UIManager : MonoBehaviour
     public static UIManager instance;
 
     [SerializeField] private GameObject _pauseMenu;
-    [SerializeField] private TextMeshProUGUI _LivesText;
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _fuelAmountText;
     [SerializeField] private Image _fuelGaugeFill;
@@ -24,7 +23,6 @@ public class UIManager : MonoBehaviour
     {
         UpdateFuelDisplay();
         UpdateHealthDisplay();
-        DisplayLives();
     }
 
     public void UpdateFuelDisplay()
@@ -37,11 +35,6 @@ public class UIManager : MonoBehaviour
     {
         _heathAmountText.text = PlayerManager.instance.GetPlayer(0).PlayerData.Health.ToString("0");
         _healthGaugeFill.fillAmount = PlayerManager.instance.GetPlayer(0).PlayerData.Health / 5f;
-    }
-
-    public void DisplayLives() 
-    {
-        _LivesText.text = "Lives: " + PlayerManager.instance.GetPlayer(0).PlayerData.Lives.ToString();
     }
 
     public void EnablePauseMenu() 

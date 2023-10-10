@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,19 +8,18 @@ public class GameManager : MonoBehaviour
 
 
     private bool _gamePaused = false;
+    private PlayerData _playerData;
 
     private void Awake()
     {
-        instance = this;
-    }
-
-    private void Start()
-    {
-/*        PlayerData player = FindObjectOfType<PlayerData>();
-        if (player.Lives <= 0) 
+        if(instance == null) 
         {
-            player.SetDefaultStats();
-        }*/
+            instance = this;
+        }
+        else 
+        {
+            Object.Destroy(gameObject);
+        }
     }
 
     private void Update()
@@ -50,15 +50,9 @@ public class GameManager : MonoBehaviour
         SceneHandler.instance.MainMenu();
     }
 
-    public void DecrementLives() 
-    {
-        PlayerManager.instance.GetPlayer(0).PlayerData.DecrementLives();
-        UIManager.instance.DisplayLives();
-    }
-
-    
     public void ResumeGame() 
     {
+        AudioManager.instance.PressButton();
         UIManager.instance.DisablePauseMenu();
         _gamePaused = false;
         Time.timeScale = 1;
@@ -75,8 +69,14 @@ public class GameManager : MonoBehaviour
 
     public void GoToMainMenu() 
     {
+        AudioManager.instance.PressButton();
         SceneHandler.instance.MainMenu();
         _gamePaused = false;
         Time.timeScale = 1;
+    }
+
+    public void ResetPlayerData() 
+    {
+        _playerData.SetDefaultStats();
     }
 }

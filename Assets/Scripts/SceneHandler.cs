@@ -10,7 +10,14 @@ public class SceneHandler : MonoBehaviour
     private Fader _fader;
     private void Awake()
     {
-        instance = this;
+        if(instance == null) 
+        {
+            instance = this;
+        }
+        else 
+        {
+            Object.Destroy(gameObject);
+        }
         if (SceneManager.GetActiveScene().buildIndex == 0)
         {
             _dummyRocket = GameObject.FindObjectOfType<DummyRocket>();
@@ -41,12 +48,14 @@ public class SceneHandler : MonoBehaviour
 
     public void MainMenu()
     {
-        SceneManager.LoadSceneAsync(0);
+        SceneManager.LoadScene(0);
     }
 
     public void StartGameMainMenu() 
     {
         StartCoroutine(StartGameCoroutine());
+
+
     }
 
     public void RestartCurrentLevel() 
@@ -57,11 +66,17 @@ public class SceneHandler : MonoBehaviour
 
     private IEnumerator StartGameCoroutine() 
     {
+
         _fader.FadeOut(1f);
         _dummyRocket.LevelStartBehaviour();
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadSceneAsync(GetNextSceneIndex());
+        if (GameManager.instance != null)
+        {
+            GameManager.instance.ResetPlayerData();
+        }
         _fader.FadeIn(1f);
+
     }
 
 }

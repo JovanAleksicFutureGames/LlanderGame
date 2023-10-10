@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -15,11 +12,15 @@ public class Pickup : MonoBehaviour
     [SerializeField] private float _resourceToAdd = 20f;
     [SerializeField] private PickupType _pickupType;
 
+    private void Update()
+    {
+        transform.Rotate(transform.up * 15f * Time.deltaTime);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Player")) 
         {
-            Debug.Log(other.name);
             if (_pickupType == PickupType.Fuel)
             {
                 other.GetComponent<PlayerController>().PlayerData.AddFuel(_resourceToAdd);

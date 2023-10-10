@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     [Header("Components")]
     [SerializeField] private ParticleSystem _exhaust;
     [SerializeField] private ParticleSystem _jumpFX;
+    [SerializeField] private ParticleSystem _damageFX;
     [SerializeField] private GameObject _mainBody;
 
     private float _xInput;
@@ -38,17 +39,11 @@ public class PlayerController : MonoBehaviour
         _mainBody.SetActive(true);
         _exhaust.gameObject.SetActive(false);
         _jumpFX.gameObject.SetActive(false);
-
+        _damageFX.gameObject.SetActive(false);
         if(PlayerData.Health <= 0 && PlayerData.FuelAmount <= 0) 
         {
             PlayerData.SetDefaultStats();
         }
-    }
-
-    private void Start()
-    {
-        //SaveWrapper.instance.LoadGame();
-
     }
 
     private void Update()
@@ -86,20 +81,10 @@ public class PlayerController : MonoBehaviour
 
     private void Boost()
     {
-        if (_input.Player.Boost.WasPressedThisFrame())
-        {
-            AudioManager.instance.SetEngineClip();
-        }
-        else if (_input.Player.Boost.WasReleasedThisFrame())
-        {
-            AudioManager.instance.StopPlayerSound();
-        }
-
         if (_input.Player.Boost.IsPressed() && PlayerData.FuelAmount > 0)
         {
             _playerMotor.AddUpForce(_forceAmount);
             DrainFuelOverTime();
-            AudioManager.instance.PlayerEnglineSound();
             _exhaust.gameObject.SetActive(true);
         }
         else 
@@ -161,7 +146,8 @@ public class PlayerController : MonoBehaviour
             //TODO: Blinking effects
             //TODO: Instantiate(collision effect)
             _collisionCooldown = 3;
-
+            AudioManager.instance.PlayerTakeDamage();
+            StartCoroutine(PlayDamageFX());
             PlayerData.DecrementHealth();
             if(PlayerData.Health <= 0) 
             {
@@ -204,16 +190,9 @@ public class PlayerController : MonoBehaviour
         GameObject explosionInstance = Instantiate(_explosionVFX, transform.position, Quaternion.identity);
         _isAlive = false;
         _mainBody.SetActive(false);
-        GameManager.instance.DecrementLives();
-        AudioManager.instance.PlayerPlayExplosionSound();
         _playerMotor.StopMovement();
         yield return new WaitForSeconds(0.55f);
         Destroy(explosionInstance);
-        if (PlayerManager.instance.GetPlayer(0).PlayerData.Lives <= 0)
-        {
-            data.SetLives(0);
-            GameManager.instance.LoseCondition();
-        }
         //SaveWrapper.instance.SaveGame();
         yield return new WaitForSeconds(0.1f);
         ResetPlayer();
@@ -225,5 +204,12 @@ public class PlayerController : MonoBehaviour
         _jumpFX.gameObject.SetActive(true);
         yield return new WaitForSeconds(.2f);
         _jumpFX.gameObject.SetActive(false);
+    }
+
+    private IEnumerator PlayDamageFX() 
+    {
+        _damageFX.gameObject.SetActive(true);
+        yield return new WaitForSeconds(.75f);
+        _damageFX.gameObject.SetActive(false);
     }
 }

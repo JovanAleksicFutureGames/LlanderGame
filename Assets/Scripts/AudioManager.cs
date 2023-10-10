@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Timeline;
 
 public class AudioManager : MonoBehaviour
 {
@@ -10,10 +7,17 @@ public class AudioManager : MonoBehaviour
     [field:SerializeField]public AudioSource PlayerAudioSource { get; private set; }
     [Header("Player Audio Clips")]
     [SerializeField]private AudioClip[] _playerAudioClips;
+    [SerializeField] private AudioClip _buttonPress;
     private void Awake()
     {
-        instance = this;
-        if (instance != null) Destroy(this);
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Object.Destroy(gameObject);
+        }
         _audioSource = GetComponent<AudioSource>();
         if(PlayerManager.instance != null) 
         {
@@ -22,55 +26,36 @@ public class AudioManager : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    public void CleanInstances(GameObject targetObj) 
+    private void AssignPlayerAudioSource()
+    {
+        PlayerAudioSource = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
+    }
+
+    public void CleanInstances(GameObject targetObj)
     {
         if (instance != null) Destroy(targetObj);
     }
 
-    public void AssignPlayerAudioController() 
-    {
-        PlayerAudioSource = PlayerManager.instance.GetPlayer(0).gameObject.GetComponent<AudioSource>();
-    }
-
-    public void PlayerEnglineSound() 
+    public void PlayerPlayJumpSound()
     {
         if (PlayerAudioSource == null)
         {
-            PlayerAudioSource = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
-        }
-        PlayerAudioSource.Play();
-        Debug.Log("Playing Engine Sound");
-
-    }
-
-    public void SetEngineClip() 
-    {
-        PlayerAudioSource.clip = _playerAudioClips[0];
-    }
-
-    public void PlayerPlayJumpSound() 
-    {
-        if (PlayerAudioSource == null)
-        {
-            PlayerAudioSource = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
+            AssignPlayerAudioSource();
         }
         PlayerAudioSource.PlayOneShot(_playerAudioClips[1]);
-
     }
 
-    public void PlayerPlayExplosionSound() 
+    public void PlayerTakeDamage() 
     {
-        if (PlayerAudioSource == null)
+        if(PlayerAudioSource == null)
         {
-            PlayerAudioSource = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
+            AssignPlayerAudioSource();
         }
-        PlayerAudioSource.PlayOneShot(_playerAudioClips[2]);
-
+        PlayerAudioSource.PlayOneShot(_playerAudioClips[3]);
     }
 
-    public void StopPlayerSound()
+    public void PressButton() 
     {
-        if (PlayerAudioSource.clip != null)
-            PlayerAudioSource.Stop();
+        _audioSource.PlayOneShot(_buttonPress);
     }
 }

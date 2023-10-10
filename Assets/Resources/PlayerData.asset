@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5f4d7d586a53a04ba43f5693af5105a, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  <FuelAmount>k__BackingField: 100
-  <Lives>k__BackingField: 3
-  <Health>k__BackingField: 5
+  <FuelAmount>k__BackingField: 44.302376
+  <Lives>k__BackingField: 1
+  <Health>k__BackingField: 3

@@ -22,9 +22,8 @@ public class EnemyProjectile : MonoBehaviour
         if(!other.gameObject.CompareTag("Enemy"))
         {
             GameObject instance = Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
-            Destroy(this.gameObject);
+            Destroy(instance, .5f);
+            Destroy(this.gameObject, .75f);
         }
-
     }
-
 }
