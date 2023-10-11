@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,9 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
-
     private bool _gamePaused = false;
     private PlayerData _playerData;
+
 
     private void Awake()
     {
@@ -36,9 +37,7 @@ public class GameManager : MonoBehaviour
 
     public void WinCondition() 
     {
-        //start game win FX
-        //start game win sound
-        SceneHandler.instance.NextScene();
+        StartVictoryCondition();
     }
 
     public void LoseCondition() 
@@ -78,5 +77,10 @@ public class GameManager : MonoBehaviour
     public void ResetPlayerData() 
     {
         _playerData.SetDefaultStats();
+    }
+
+    private void StartVictoryCondition() 
+    {
+        UIManager.instance.EnableVictoryScreen();
     }
 }
