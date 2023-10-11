@@ -15,7 +15,6 @@ public class Turrets : MonoBehaviour
 
     private void Awake()
     {
-        //TOOD: FIX EVERYTHING YOU BROKE
         _target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 

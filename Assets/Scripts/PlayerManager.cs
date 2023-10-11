@@ -5,24 +5,25 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     [field:SerializeField] private List<PlayerController> playerList = new List<PlayerController>();
-
     public static PlayerManager instance;
 
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null)
+            instance = this;
+        else if (instance != null)
+            CleanUpObject();
 
         foreach (PlayerController player in GameObject.FindObjectsOfType<PlayerController>())
         {
             playerList.Add(player);
         }
-        AssignPlayers();
     }
 
-    private void AssignPlayers() 
+    private void CleanUpObject() 
     {
-        //playerList[0].SetIsPlayerOne(true);
+        Destroy(gameObject);
     }
 
     public PlayerController GetPlayer(int i)

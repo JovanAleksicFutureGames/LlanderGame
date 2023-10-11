@@ -42,15 +42,5 @@ public class EnviornmentSpawner : MonoBehaviour
     {
         _meshFilter = _spawnedObj.GetComponent<MeshFilter>();
         _meshRenderer = _spawnedObj.GetComponent<MeshRenderer>();
-/*        _meshCollider.enabled = false;
-        RaycastHit hit;
-        bool isIntersecting = Physics.Raycast(_spawnedObj.transform.position, Vector3.up, out hit, 5f);
-        if (isIntersecting) 
-        {
-            Destroy(_spawnedObj);
-            _meshFilter = _spawnedObj.GetComponent<MeshFilter>();
-            _meshRenderer = _spawnedObj.GetComponent<MeshRenderer>();
-            _meshCollider.enabled = true;
-        }*/
     }
 }

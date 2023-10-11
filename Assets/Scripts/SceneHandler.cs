@@ -54,8 +54,6 @@ public class SceneHandler : MonoBehaviour
     public void StartGameMainMenu() 
     {
         StartCoroutine(StartGameCoroutine());
-
-
     }
 
     public void RestartCurrentLevel() 

@@ -16,7 +16,7 @@ The game persists data through a custom serialization system I made some time ag
 The core objects are all collected in one prefab. Managers persist and DoNotDestroyOnLoad objects. 
 
 SCENE FLOW:
-The first scene in "Scenes" folder you should open is MainMenu. From there the scenes should go over Level1, Level2, Level3, Level4 and back to the Main Menu. Notice that you as a player do not control anything outside of entering the game and returning to the main menu through the pause menu.
+The first scene in "Scenes" folder you should open is MainMenu. From there the scenes should go over Level1, Level2, Level3, Level4 and back to the Main Menu. Notice that you as a player do not control anything in the scene flow outside of entering the game and returning to the main menu through the pause menu, as well as returning through the victory screen.
 
 CODE STRUCTURE AND GAMEPLAY:
 Two scripts drive the behaviour of the player - Controller and Motor (PlayerController.cs and PlayerMotor.cs). The player controller takes in the player input, as well as whether or not the player is alive. PlayerController also hosts the PlayerData scriptable object that stores the amount of fuel the player has and the player's health. If the player runs out of health, the ship explodes and the player will find themselves at the start of the level. If the player runs out of fuel, they will lose control over the craft and it will plummet down while spinning. The player ship will then explode upon contact with any surface. The player goes through a series of portals. The portal code was also written by me a while ago based on the code provided by GameDev.tv. I reused the code from one of my side projects, and it works, although there are certain hickups. 
@@ -34,3 +34,4 @@ Game Manager, UI Manager, Audio Manager and Scene Handler exist as .cs files in 
 Bugs left over:
 Rockets can deal damage to the player two times in a row due to the speed with which they self-destruct.
 The music gets disabled after the player "wins" the game and doesn't start back up unless the player "restarts" the game. 
+The game builds, but cannot be played on a cumputer with two screens.

@@ -42,10 +42,6 @@ public class GameManager : MonoBehaviour
 
     public void LoseCondition() 
     {
-        //TOOD: finish lose condition
-        //TODO: lose sound FX
-        //TOOD: lose visual FX
-        //TODO: display lose scene
         SceneHandler.instance.MainMenu();
     }
 

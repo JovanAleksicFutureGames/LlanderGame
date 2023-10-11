@@ -25,9 +25,6 @@ public class PlayerController : MonoBehaviour
 
     private float _xInput;
     private float _collisionCooldown = 1f;
-
-    //temp - will migrate to Score and Game Manager scripts
-
     [SerializeField] GameObject _explosionVFX;
 
     private void Awake()
@@ -71,7 +68,6 @@ public class PlayerController : MonoBehaviour
             _xInput = -_input.Player.Rotate.ReadValue<Vector2>().x;
             transform.Rotate(Vector3.forward * _xInput * _rotationSpeed * Time.fixedDeltaTime);
         }
-
     }
 
     private void LoseControl() 
@@ -136,15 +132,10 @@ public class PlayerController : MonoBehaviour
         transform.position = new Vector3(-12.25f, -2.25f, 0f);
     }
 
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == 3 && _collisionCooldown <= 0)
         {
-            //socring and end game logic goes here
-            //Done: Cooldown that prevents us from colliding with multiple colliders
-            //TODO: Blinking effects
-            //TODO: Instantiate(collision effect)
             _collisionCooldown = 3;
             StartCoroutine(PlayDamageFX());
             PlayerData.DecrementHealth();
@@ -159,10 +150,6 @@ public class PlayerController : MonoBehaviour
         if(PlayerData.FuelAmount < .5f)
         {
             StartCoroutine(PlayerDeath(PlayerData));
-        }
-        else if (collision.gameObject.layer == 6)
-        {
-            //set up the portal functionality
         }
     }
 
@@ -181,6 +168,7 @@ public class PlayerController : MonoBehaviour
     {
         return _input.Player.Pause.WasPerformedThisFrame();
     }
+
     //coroutines
 
     private IEnumerator PlayerDeath(PlayerData data)
@@ -193,7 +181,6 @@ public class PlayerController : MonoBehaviour
         _playerMotor.StopMovement();
         yield return new WaitForSeconds(0.55f);
         Destroy(explosionInstance);
-        //SaveWrapper.instance.SaveGame();
         yield return new WaitForSeconds(0.1f);
         ResetPlayer();
 
