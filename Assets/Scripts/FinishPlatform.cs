@@ -7,7 +7,6 @@ public class FinishPlatform : MonoBehaviour
     private AudioSource _audioSource;
 
     [SerializeField] private GameObject _victoryParticle;
-    [SerializeField] private AudioClip _victorySound;
 
     private void Awake()
     {

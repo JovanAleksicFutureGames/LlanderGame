@@ -7,6 +7,8 @@ public class AudioManager : MonoBehaviour
     [field:SerializeField]public AudioSource PlayerAudioSource { get; private set; }
     [Header("Player Audio Clips")]
     [SerializeField]private AudioClip[] _playerAudioClips;
+    [SerializeField] private AudioClip _victoryClip;
+    [SerializeField] private AudioClip _musicClip;
     [SerializeField] private AudioClip _buttonPress;
     private void Awake()
     {
@@ -16,14 +18,22 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Object.Destroy(gameObject);
+            CleanInstances(gameObject);
         }
         _audioSource = GetComponent<AudioSource>();
         if(PlayerManager.instance != null) 
         {
             PlayerAudioSource = PlayerManager.instance.GetPlayer(0).gameObject.GetComponent<AudioSource>();
         }
+        _audioSource.enabled = true;
+        _audioSource.clip = _musicClip;
+
         DontDestroyOnLoad(this);
+    }
+
+    private void Start()
+    {
+        _audioSource.Play();
     }
 
     private void AssignPlayerAudioSource()
@@ -54,8 +64,14 @@ public class AudioManager : MonoBehaviour
         PlayerAudioSource.PlayOneShot(_playerAudioClips[3]);
     }
 
-    public void PressButton() 
+    public void PlayVictorySound() 
     {
-        _audioSource.PlayOneShot(_buttonPress);
+
+        _audioSource.Stop();
+        _audioSource.PlayOneShot(_victoryClip);
+    }
+
+    public void PressButton() 
+    {        _audioSource.PlayOneShot(_buttonPress);
     }
 }

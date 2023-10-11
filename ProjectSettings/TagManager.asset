@@ -7,6 +7,7 @@ TagManager:
   - Start
   - GameManager
   - Enemy
+  - Pickup
   layers:
   - Default
   - TransparentFX

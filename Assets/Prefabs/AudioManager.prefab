@@ -101,6 +101,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f1364d48e48ea4fdab44868cc9b2a10e, type: 3}
   - {fileID: 8300000, guid: 654d1ed270c714ddb8c934ac5fef5edc, type: 3}
   - {fileID: 8300000, guid: a950dd5a78f174cf49cc308afcd87744, type: 3}
+  _victoryClip: {fileID: 8300000, guid: 9e615a6ec1e774c0a8bfb003bbfe14ee, type: 3}
+  _musicClip: {fileID: 8300000, guid: ad403fe5cb1141c4db962f01954ad170, type: 3}
+  _buttonPress: {fileID: 8300000, guid: 1e6c356d5843c40c8a232158dc6af52a, type: 3}
 --- !u!82 &7270909000905042952
 AudioSource:
   m_ObjectHideFlags: 0

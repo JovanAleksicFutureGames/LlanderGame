@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
 
     private void StartVictoryCondition() 
     {
+        AudioManager.instance.PlayVictorySound();
         UIManager.instance.EnableVictoryScreen();
     }
 }

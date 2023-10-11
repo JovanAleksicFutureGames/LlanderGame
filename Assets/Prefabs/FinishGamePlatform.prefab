@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _victoryParticle: {fileID: 8705756213879678271}
-  _victorySound: {fileID: 0}
+  _victorySound: {fileID: 8300000, guid: 8851237a0219645c29a49683c44c82e6, type: 3}
 --- !u!1001 &528588605933462109
 PrefabInstance:
   m_ObjectHideFlags: 0
