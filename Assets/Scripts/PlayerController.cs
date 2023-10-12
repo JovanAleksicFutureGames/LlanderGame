@@ -52,6 +52,11 @@ public class PlayerController : MonoBehaviour
         {
             LoseControl();
         }
+
+        if(transform.position.y <= -14.5f) 
+        {
+            StartCoroutine(PlayerDeath(PlayerData));
+        }
     }
 
     private void FixedUpdate()

@@ -8,7 +8,7 @@ Project Llander is a sidescrolling lander type of game where the player navigate
 The player can pick up extra fuel canisters along the way and repair kits that add 1 point of health to the player. The player is supposed to fly their ship by controlling the ships's booster and controlling the rotation with occasional boosts in speed through the "jump" functionality. 
 
 HOW TO PLAY:
-The game is played in a keyboard.
+The game is played on a keyboard.
 The player's rotation is controlled with the A and D keys. The player can boost by holding the space key, finally the player can "jump" by pressing the Left Shift key. You pause the game with the Esc key. 
 
 DATA PERSISTANCE:
