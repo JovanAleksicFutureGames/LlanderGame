@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class EnviornmentSpawner : MonoBehaviour
+public class EnvironmentSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] _envPrefabs;
     private MeshRenderer _meshRenderer;
